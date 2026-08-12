@@ -8,10 +8,11 @@
   height: 4px;
   background: linear-gradient(
     90deg,
-    var(--accent) 0 34%,
-    var(--accent-secondary-bright) 34% 58%,
-    var(--accent-warm) 58% 78%,
-    var(--surface-inverse-muted) 78%
+    var(--accent) 0 28%,
+    var(--accent-secondary-bright) 28% 48%,
+    var(--accent-secondary) 48% 68%,
+    var(--accent-warm) 68% 84%,
+    var(--surface-inverse-muted) 84%
   );
   margin-bottom: var(--space-6);
 }

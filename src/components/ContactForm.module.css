@@ -91,9 +91,9 @@
 }
 
 .submitButton {
-  border: 1px solid var(--accent-secondary);
+  border: 1px solid var(--accent-secondary-bright);
   border-radius: 0;
-  background: var(--accent-secondary);
+  background: var(--accent-secondary-bright);
   color: var(--text-on-accent);
   font-weight: 700;
   font-size: 1rem;
@@ -107,8 +107,8 @@
 }
 
 .submitButton:hover {
-  background: var(--accent-secondary-hover);
-  border-color: var(--accent-secondary-hover);
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
   transform: translateY(-1px);
 }
 

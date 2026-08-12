@@ -16,13 +16,15 @@ export function Skyline() {
     >
       <defs>
         <linearGradient id="skyline-dusk" x1="0" y1="0" x2="0.28" y2="1">
-          <stop offset="0%" stopColor="var(--surface-sky)" />
-          <stop offset="42%" stopColor="var(--surface-inverse-raised)" />
+          <stop offset="0%" stopColor="var(--surface-sky-high)" />
+          <stop offset="28%" stopColor="var(--surface-sky)" />
+          <stop offset="62%" stopColor="var(--surface-sky-low)" />
           <stop offset="100%" stopColor="var(--surface-inverse)" />
         </linearGradient>
         <linearGradient id="skyline-glow" x1="0.5" y1="0" x2="0.5" y2="1">
-          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.18" />
-          <stop offset="55%" stopColor="var(--accent)" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.22" />
+          <stop offset="40%" stopColor="var(--accent-secondary-bright)" stopOpacity="0.08" />
+          <stop offset="70%" stopColor="var(--accent)" stopOpacity="0" />
         </linearGradient>
       </defs>
 
@@ -79,7 +81,7 @@ export function Skyline() {
       </g>
 
       {/* Torres de Parque Central — twin towers + complejo podium */}
-      <g fill="var(--surface-inverse-muted)">
+      <g fill="var(--surface-building-raised)">
         {/* podium / Complejo Parque Central */}
         <rect x="330" y="580" width="280" height="140" />
         <rect x="350" y="560" width="80" height="20" />
@@ -121,7 +123,7 @@ export function Skyline() {
       </g>
 
       {/* Torre BOD / Torres Gemelas de El Recreo — twin pair, right */}
-      <g fill="var(--surface-inverse-muted)">
+      <g fill="var(--surface-building-raised)">
         <rect x="1000" y="300" width="64" height="420" />
         <rect x="1090" y="300" width="64" height="420" />
         <rect x="994" y="288" width="76" height="14" />
