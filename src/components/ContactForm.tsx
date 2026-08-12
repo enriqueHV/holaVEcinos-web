@@ -254,7 +254,27 @@ export function ContactForm() {
           )}
         </div>
 
-        <div className={styles.field}>
+        <div className={`${styles.field} ${styles.full}`}>
+          <label htmlFor="organizationName">Condominio u organización*</label>
+          <input
+            ref={organizationRef}
+            id="organizationName"
+            name="organizationName"
+            type="text"
+            autoComplete="organization"
+            value={values.organizationName}
+            onChange={(event) => updateValue('organizationName', event.target.value)}
+            aria-invalid={Boolean(errors.organizationName)}
+            aria-describedby={errors.organizationName ? 'organization-error' : undefined}
+          />
+          {errors.organizationName && (
+            <p id="organization-error" className={styles.errorText}>
+              {errors.organizationName}
+            </p>
+          )}
+        </div>
+
+        <div className={`${styles.field} ${styles.full}`}>
           <label htmlFor="phone">Teléfono</label>
           <input
             ref={phoneRef}
@@ -274,25 +294,6 @@ export function ContactForm() {
           {errors.phone && (
             <p id="phone-error" className={styles.errorText}>
               {errors.phone}
-            </p>
-          )}
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="organizationName">Condominio u organización*</label>
-          <input
-            ref={organizationRef}
-            id="organizationName"
-            name="organizationName"
-            type="text"
-            value={values.organizationName}
-            onChange={(event) => updateValue('organizationName', event.target.value)}
-            aria-invalid={Boolean(errors.organizationName)}
-            aria-describedby={errors.organizationName ? 'organization-error' : undefined}
-          />
-          {errors.organizationName && (
-            <p id="organization-error" className={styles.errorText}>
-              {errors.organizationName}
             </p>
           )}
         </div>
