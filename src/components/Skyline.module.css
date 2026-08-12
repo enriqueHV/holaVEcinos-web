@@ -1,0 +1,39 @@
+.root {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+.windowPulse,
+.windowPulseLate {
+  animation: blink 3.6s ease-in-out infinite;
+}
+
+.windowPulseLate {
+  animation-delay: 1.4s;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  40% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .windowPulse,
+  .windowPulseLate {
+    animation: none;
+    opacity: 0.7;
+  }
+}

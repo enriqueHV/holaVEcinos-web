@@ -1,0 +1,19 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#F2F4F0" />
+  <rect x="76" y="70" width="1048" height="490" rx="24" fill="#FFFFFF" stroke="#C8CEC4" stroke-width="2" />
+  <rect x="130" y="128" width="72" height="72" rx="12" fill="#1B6B52" />
+  <path d="M150 157L166 147L182 157V177L166 183L150 177V157Z" fill="#D8EBE3" />
+  <text x="224" y="176" fill="#1A1F1C" font-size="56" font-family="Nunito Sans, Arial, sans-serif" font-weight="700">
+    holaVEcinos
+  </text>
+  <text x="130" y="262" fill="#1A1F1C" font-size="44" font-family="Literata, Georgia, serif" font-weight="600">
+    Transparencia para la gestión del condominio
+  </text>
+  <text x="130" y="320" fill="#5A635C" font-size="30" font-family="Nunito Sans, Arial, sans-serif" font-weight="500">
+    Cuotas, pagos, pasivos, facturas, votaciones y recordatorios en un solo lugar.
+  </text>
+  <rect x="130" y="382" width="314" height="74" rx="10" fill="#1B6B52" />
+  <text x="182" y="429" fill="#FFFFFF" font-size="30" font-family="Nunito Sans, Arial, sans-serif" font-weight="700">
+    holavecinos.app
+  </text>
+</svg>

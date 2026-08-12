@@ -1,0 +1,40 @@
+.main {
+  min-height: 70vh;
+  padding: var(--space-8) var(--space-4);
+}
+
+.content {
+  max-width: 75ch;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.backLink {
+  margin: 0;
+}
+
+.backLink a {
+  font-weight: 700;
+}
+
+.content h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+}
+
+.content h2 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.3rem;
+}
+
+.content p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.content section {
+  display: grid;
+  gap: var(--space-2);
+}
