@@ -55,7 +55,8 @@ export default defineConfig({
     },
   ],
   server: {
-    port: 5173,
+    // App Frontend uses 5173; keep marketing on 5174 so Log In can open the app.
+    port: 5174,
     strictPort: true,
   },
 });

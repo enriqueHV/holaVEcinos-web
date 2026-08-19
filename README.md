@@ -19,7 +19,10 @@ npm install
 npm run dev
 ```
 
-Abre `http://localhost:5173`.
+Abre `http://localhost:5174`.
+
+El botón **Log In** apunta a la app en `http://localhost:5173/login` (`VITE_APP_URL`).
+La app Frontend debe estar corriendo en el puerto 5173.
 
 ## Variables de entorno
 
@@ -28,6 +31,8 @@ Crea un archivo `.env` en la raíz del proyecto usando `.env.example` como base.
 Variables principales:
 
 - `VITE_SITE_URL`: URL canónica del sitio (ejemplo `https://holavecinos.app`)
+- `VITE_APP_URL`: origen del frontend de la app (local `http://localhost:5173`)
+- `VITE_APP_LOGIN_URL`: opcional; URL completa de login si no es `${VITE_APP_URL}/login`
 - `VITE_CONTACT_ENDPOINT`: endpoint del formulario (por defecto `/api/contact`)
 - `CONTACT_TO_EMAIL`: correo destino de leads
 - `RESEND_API_KEY`: clave API de Resend

@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { ContactForm } from '../components/ContactForm';
 import { SiteFooter } from '../components/SiteFooter';
 import { Skyline } from '../components/Skyline';
-import { canonicalForPath, getSiteUrl } from '../lib/site';
+import { canonicalForPath, getAppLoginUrl, getSiteUrl } from '../lib/site';
 import styles from './HomePage.module.css';
 
 const folios = [
@@ -70,6 +70,7 @@ const faqs = [
 
 export function HomePage() {
   const siteUrl = getSiteUrl();
+  const loginUrl = getAppLoginUrl();
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -107,9 +108,14 @@ export function HomePage() {
       </Helmet>
 
       <header className={styles.topbar}>
-        <a href="#contacto" className={styles.topbarCta}>
-          Escribirnos
-        </a>
+        <div className={styles.topbarActions}>
+          <a href={loginUrl} className={styles.topbarLogin}>
+            Log In
+          </a>
+          <a href="#contacto" className={styles.topbarCta}>
+            Escribirnos
+          </a>
+        </div>
         <nav aria-label="Navegación principal" className={styles.topbarNav}>
           <a href="#problema">Problema</a>
           <a href="#folios">Qué hace</a>

@@ -1,5 +1,10 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="12" fill="#1B6B52" />
-  <path d="M16 24L32 14L48 24V44L32 50L16 44V24Z" fill="#D8EBE3" />
-  <path d="M24 36H40V40H24V36ZM24 28H40V32H24V28Z" fill="#1B6B52" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="holaVEcinos">
+  <!-- Simplified house mark for small sizes. Spec: /brand/PALETTE.md section 8 -->
+  <rect width="64" height="64" rx="13" fill="#FEFAFA"/>
+  <g transform="translate(32 32) scale(0.86) translate(-32 -32)">
+    <path d="M32 7 L60 31 H4 Z" fill="#F96A20"/>
+    <rect x="12" y="30" width="40" height="22" fill="#D95F35"/>
+    <rect x="26" y="36" width="12" height="16" rx="1" fill="#FEFAFA"/>
+    <rect x="8" y="53" width="48" height="4" rx="2" fill="#3C3B3F"/>
+  </g>
 </svg>

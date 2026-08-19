@@ -9,6 +9,13 @@
   padding: var(--space-4) clamp(1.25rem, 4vw, 3rem);
 }
 
+.topbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .topbarNav {
   display: flex;
   flex-wrap: wrap;
@@ -31,9 +38,28 @@
 }
 
 .topbarNav a:focus-visible,
+.topbarLogin:focus-visible,
 .topbarCta:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+}
+
+.topbarLogin {
+  color: var(--text-on-inverse);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--text-on-inverse) 55%, transparent);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+}
+
+.topbarLogin:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .topbarCta {
