@@ -6,17 +6,36 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  background: var(--surface);
-  color: var(--text-primary);
-  font-size: 16px;
+  font-family: var(--font-ui);
+  background: var(--hv-cream);
+  color: var(--hv-charcoal);
+  font-size: var(--fs-17);
+  font-weight: 400;
   line-height: 1.6;
+  font-variant-numeric: var(--num-feat);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-ui);
 }
 
 img {
@@ -32,6 +51,7 @@ a {
 a:hover {
   text-decoration: underline;
   text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 p,
@@ -39,19 +59,62 @@ li {
   max-width: 75ch;
 }
 
+/* ——— Numeric helpers — any place digits must align ——— */
+.hv-num {
+  font-variant-numeric: var(--num-feat);
+}
+
+.hv-money {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--fs-17);
+  font-variant-numeric: var(--num-feat);
+}
+
+.hv-id,
+.hv-date {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--fs-15);
+  font-variant-numeric: var(--num-feat);
+}
+
+/* ——— Surface helper — cards are paper on cream with a visible whisper of a border ——— */
+.hv-card {
+  background: var(--hv-paper);
+  border: var(--hv-rule);
+  border-radius: var(--radius-md);
+}
+
+.hv-eyebrow {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--fs-11);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hv-orange);
+}
+
 .skip-link {
   position: absolute;
   left: 12px;
   top: -120px;
   z-index: 1000;
-  background: var(--surface-inverse);
-  color: var(--accent);
-  padding: 10px 12px;
+  background: var(--hv-orange);
+  color: var(--text-on-accent);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
   font-weight: 700;
 }
 
 .skip-link:focus {
   top: 12px;
+}
+
+:where(a, button, summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--hv-orange);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 import { ContactForm } from '../components/ContactForm';
 import { SiteFooter } from '../components/SiteFooter';
-import { Skyline } from '../components/Skyline';
 import { canonicalForPath, getAppLoginUrl, getSiteUrl } from '../lib/site';
 import styles from './HomePage.module.css';
+import logoMark from '../assets/brand/logo-mark.png';
+import logoWordmark from '../assets/brand/logo-wordmark.png';
 
 const folios = [
   {
@@ -74,7 +75,7 @@ export function HomePage() {
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'holaVEcinos',
+    name: 'HolaVEcinos',
     url: siteUrl,
     email: 'esucre@holavecinos.app',
     contactPoint: [
@@ -91,13 +92,13 @@ export function HomePage() {
   return (
     <>
       <Helmet>
-        <title>holaVEcinos | El libro claro del condominio</title>
+        <title>HolaVEcinos | El libro claro del condominio</title>
         <meta
           name="description"
-          content="holaVEcinos ordena cuotas, pagos, pasivos y decisiones de comunidad para juntas, administradoras y propietarios en Venezuela."
+          content="HolaVEcinos ordena cuotas, pagos, pasivos y decisiones de comunidad para juntas, administradoras y propietarios en Venezuela."
         />
         <link rel="canonical" href={canonicalForPath('/')} />
-        <meta property="og:title" content="holaVEcinos | El libro claro del condominio" />
+        <meta property="og:title" content="HolaVEcinos | El libro claro del condominio" />
         <meta
           property="og:description"
           content="Transparencia financiera y operación diaria del condominio en un solo entorno."
@@ -108,6 +109,14 @@ export function HomePage() {
       </Helmet>
 
       <header className={styles.topbar}>
+        <a className={styles.topbarBrand} href="#brand-title">
+          <img src={logoMark} alt="" width={403} height={349} aria-hidden="true" />
+          <span>
+            Hola
+            <span className={styles.brandVe}>VE</span>
+            cinos
+          </span>
+        </a>
         <div className={styles.topbarActions}>
           <a href={loginUrl} className={styles.topbarLogin}>
             Log In
@@ -118,6 +127,7 @@ export function HomePage() {
         </div>
         <nav aria-label="Navegación principal" className={styles.topbarNav}>
           <a href="#problema">Problema</a>
+          <a href="#quienes">Quiénes somos</a>
           <a href="#folios">Qué hace</a>
           <a href="#ruta">Ruta</a>
           <a href="#faq">FAQ</a>
@@ -126,16 +136,18 @@ export function HomePage() {
 
       <main id="contenido-principal">
         <section className={styles.hero} aria-labelledby="brand-title">
-          <div className={styles.heroBackdrop}>
-            <Skyline />
-          </div>
-
           <div className={styles.heroContent}>
             <p className={styles.localeTag}>Venezuela · solo condominios</p>
-            <h1 id="brand-title" className={styles.brandName}>
-              hola
-              <span className={styles.brandVe}>VE</span>
-              cinos
+            <img
+              className={styles.heroMark}
+              src={logoMark}
+              alt=""
+              width={403}
+              height={349}
+              aria-hidden="true"
+            />
+            <h1 id="brand-title" className={styles.brandLockup}>
+              <img src={logoWordmark} alt="HolaVEcinos" width={704} height={93} />
             </h1>
             <p className={styles.heroLine}>
               Mira exactamente a dónde van las cuotas de tu edificio.

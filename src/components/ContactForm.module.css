@@ -10,11 +10,12 @@
 
 .generalError {
   margin: 0;
-  border: 1px solid var(--danger);
-  border-left: 4px solid var(--danger);
-  border-radius: 0;
-  background: var(--danger-soft);
-  color: var(--danger);
+  border: var(--hv-rule);
+  border-left: 3px solid var(--hv-expense);
+  border-radius: var(--radius-sm);
+  background: var(--hv-expense-100);
+  color: var(--hv-expense);
+  font-size: var(--fs-15);
   padding: var(--space-3) var(--space-4);
 }
 
@@ -34,21 +35,24 @@
 }
 
 .field label {
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: var(--fs-15);
+  font-weight: 700;
+  color: var(--hv-charcoal);
 }
 
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: var(--surface);
-  color: var(--text-primary);
-  font: inherit;
+  border: 1px solid var(--hv-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--hv-white);
+  color: var(--hv-charcoal);
+  font-family: var(--font-ui);
+  font-size: var(--fs-17);
+  font-variant-numeric: var(--num-feat);
   padding: 12px;
-  min-height: 44px;
+  min-height: 48px;
 }
 
 .field textarea {
@@ -58,19 +62,20 @@
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
-  outline: 2px solid var(--accent-secondary);
+  outline: 2px solid var(--hv-orange);
   outline-offset: 1px;
 }
 
 .hint {
   margin: 0;
-  font-size: 0.875rem;
-  color: var(--text-faint);
+  font-size: var(--fs-13);
+  color: var(--hv-charcoal-300);
 }
 
 .errorText {
   margin: 0;
-  color: var(--danger);
+  color: var(--hv-expense);
+  font-size: var(--fs-15);
   font-weight: 600;
 }
 
@@ -91,12 +96,12 @@
 }
 
 .submitButton {
-  border: 1px solid var(--accent-secondary-bright);
-  border-radius: 0;
-  background: var(--accent-secondary-bright);
+  border: 1px solid var(--hv-orange);
+  border-radius: var(--radius-sm);
+  background: var(--hv-orange);
   color: var(--text-on-accent);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--fs-17);
   min-height: 48px;
   padding: 10px 18px;
   display: inline-flex;
@@ -107,8 +112,8 @@
 }
 
 .submitButton:hover {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
+  background: var(--hv-orange-600);
+  border-color: var(--hv-orange-600);
   transform: translateY(-1px);
 }
 
@@ -118,7 +123,7 @@
 }
 
 .submitButton:focus-visible {
-  outline: 2px solid var(--text-primary);
+  outline: 2px solid var(--hv-charcoal);
   outline-offset: 2px;
 }
 
@@ -126,16 +131,16 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid color-mix(in srgb, var(--text-on-accent) 50%, transparent);
-  border-top-color: var(--text-on-accent);
+  border: 2px solid color-mix(in srgb, var(--hv-charcoal) 40%, transparent);
+  border-top-color: var(--hv-charcoal);
   animation: spin 700ms linear infinite;
 }
 
 .successPanel {
-  border: 1px solid var(--surface-inverse);
-  border-left: 4px solid var(--accent-deep);
-  border-radius: 0;
-  background: var(--accent-soft);
+  border: var(--hv-rule);
+  border-left: 3px solid var(--hv-income);
+  border-radius: var(--radius-sm);
+  background: var(--hv-income-100);
   padding: var(--space-5);
   display: grid;
   gap: var(--space-3);
@@ -147,7 +152,7 @@
 }
 
 .warningText {
-  border-left: 3px solid var(--warning);
+  border-left: 3px solid var(--hv-warning);
   padding-left: var(--space-3);
 }
 

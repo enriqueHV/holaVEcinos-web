@@ -1,6 +1,7 @@
 .footer {
-  background: var(--surface-inverse);
-  color: var(--text-on-inverse);
+  background: var(--hv-cream);
+  color: var(--hv-charcoal);
+  border-top: var(--hv-rule);
   padding: 0 clamp(1.25rem, 4vw, 3.5rem) var(--space-6);
 }
 
@@ -8,17 +9,17 @@
   height: 4px;
   background: linear-gradient(
     90deg,
-    var(--accent) 0 28%,
-    var(--accent-secondary-bright) 28% 48%,
-    var(--accent-secondary) 48% 68%,
-    var(--accent-warm) 68% 84%,
-    var(--surface-inverse-muted) 84%
+    var(--hv-orange) 0 34%,
+    var(--hv-terracotta) 34% 56%,
+    var(--hv-slate) 56% 74%,
+    var(--hv-slate-100) 74% 88%,
+    var(--hv-orange-100) 88%
   );
   margin-bottom: var(--space-6);
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: var(--content-max);
   margin: 0 auto;
   display: grid;
   gap: var(--space-4);
@@ -26,11 +27,11 @@
 
 .brand {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  color: var(--text-on-dark);
-  letter-spacing: -0.04em;
-  font-weight: 800;
+}
+
+.brand img {
+  width: min(100%, 260px);
+  height: auto;
 }
 
 .meta {
@@ -38,33 +39,30 @@
   flex-wrap: wrap;
   gap: var(--space-4);
   align-items: center;
+  font-size: var(--fs-15);
 }
 
 .meta a {
-  color: var(--accent);
+  color: var(--hv-slate);
   font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--hv-slate) 35%, transparent);
   padding-bottom: 1px;
 }
 
 .meta a:hover {
-  color: var(--text-on-dark);
-  border-bottom-color: var(--text-on-dark);
-}
-
-.meta a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  color: var(--hv-orange);
+  border-bottom-color: var(--hv-orange);
+  text-decoration: none;
 }
 
 .todo {
-  color: color-mix(in srgb, var(--text-on-inverse) 45%, transparent);
-  font-size: 0.875rem;
+  color: var(--hv-charcoal-300);
+  font-size: var(--fs-13);
 }
 
 .copy {
   margin: var(--space-2) 0 0;
-  color: color-mix(in srgb, var(--text-on-inverse) 55%, transparent);
-  font-size: 0.9375rem;
+  color: var(--hv-charcoal-500);
+  font-size: var(--fs-13);
 }

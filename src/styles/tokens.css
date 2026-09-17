@@ -1,68 +1,65 @@
 /**
- * Color tokens — role-named, light theme only.
- * Palette: Caracas dusk (purple structure + warm sky accents).
- * Dark theme: NOT in scope. Add `[data-theme="dark"]` later with the same names.
+ * holaVEcinos design system — single source of truth.
  *
- * Hex values live ONLY in this :root block (all from the approved set).
+ * Tokens are transcribed verbatim from the approved design-system spec.
+ * Do NOT invent alternates. Hex values live ONLY in this :root block.
+ *
+ * Light theme only: flat cream base, warm cream + cool charcoal neutrals.
+ * NOT permitted: blue/purple mesh gradients, glass panels, dark-mode navy
+ * fintech backgrounds, textures, full-bleed hero photography behind UI.
  */
 :root {
-  /* ——— Surfaces ——— */
-  --surface: #fbe5c8;
-  --surface-raised: #ffe3a8;
-  --surface-sunken: #f4d9c2;
-  --surface-folio: #ffe0a6;
-  --surface-inverse: #0b0517;
-  --surface-inverse-raised: #1c0f2e;
-  --surface-inverse-muted: #2a1640;
-  --surface-sky: #2a1450;
-  --surface-sky-high: #1f1148;
-  --surface-sky-low: #3a1d60;
-  --surface-ridge: #16092c;
-  --surface-ridge-deep: #0e0617;
-  --surface-ground: #0e0617;
-  --surface-building: #1a0a24;
-  --surface-building-raised: #3a1f55;
+  /* ——— Brand ——— */
+  --hv-orange: #f27a1a; /* primary — CTAs, active nav, the "VE" in wordmark */
+  --hv-orange-600: #d96712; /* hover */
+  --hv-orange-100: #fdecd9; /* tint — chips, subtle fills */
+  --hv-terracotta: #c0532e; /* secondary accent */
+  --hv-terracotta-100: #f6dfd4; /* terracotta tint */
+  --hv-slate: #3e5975; /* tertiary — links, info states, chart series #3 */
+  --hv-slate-100: #dde5ef; /* info tint */
 
-  /* ——— Text ——— */
-  --text-primary: #0b0517;
-  --text-muted: #4a2563;
-  --text-faint: #6b3a86;
-  --text-on-inverse: #fbe5c8;
-  --text-on-dark: #ffe3a8;
-  /* Dark label on bright coral CTA fills (#FF6B3D fails AA with light labels) */
-  --text-on-accent: #0b0517;
+  /* ——— Neutrals — cool charcoal, warm cream. Never pure black or white. ——— */
+  --hv-charcoal: #2a2e38; /* primary text (faint navy tint) */
+  --hv-charcoal-500: #6a6f7c; /* secondary text */
+  --hv-charcoal-300: #a5a9b3; /* muted text */
+  --hv-cream: #f8f4ec; /* app background */
+  --hv-paper: #fefcf7; /* card surface, one step lighter than cream */
+  --hv-white: #ffffff; /* only inside form inputs */
 
-  /* ——— Borders ——— */
-  --border: #6b3a86;
-  --border-strong: #0b0517;
+  /* ——— Semantic — bold, saturated. Punchy, not peaceful. ——— */
+  --hv-income: #22a45a; /* fresh green — paid, positive, income */
+  --hv-income-100: #d3f1de;
+  --hv-expense: #e23d2c; /* punchy red — overdue, negative, expense */
+  --hv-expense-100: #fdd8d3;
+  --hv-warning: #f5b301; /* saturated honey — pending */
+  --hv-warning-100: #feedbe;
 
-  /* ——— Accent primary (warm gold highlight on dark) ——— */
-  --accent: #ffd089;
-  --accent-deep: #f2a65a;
-  --accent-soft: #ffe3a8;
+  /* ——— Borders — a whisper, not a wall. ——— */
+  --hv-border: rgba(46, 46, 46, 0.08);
+  --hv-border-strong: rgba(46, 46, 46, 0.16);
+  --hv-rule: 1px solid var(--hv-border);
 
-  /* ——— Accent secondary ——— */
-  /* #B23A78: AA as text on --surface (4.55:1) and usable for outlines */
-  --accent-secondary: #b23a78;
-  --accent-secondary-hover: #5a2670;
-  /* Bright coral for CTA fills + decorative neon (pair with --text-on-accent) */
-  --accent-secondary-bright: #ff6b3d;
-  --accent-secondary-soft: #ffb5b5;
-  --accent-warm: #ffe0a6;
+  /* ——— Type families: three families, each with a job. ——— */
+  --font-display: 'Space Grotesk', 'DM Sans', 'Arial Narrow', sans-serif;
+  --font-ui: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', ui-monospace, monospace;
 
-  /* ——— Status ——— */
-  --danger: #b23a78;
-  --danger-soft: #fbe5c8;
-  --warning: #5a2670;
-  --warning-soft: #ffe0a6;
-  --success: #f2a65a;
-  --success-soft: #ffe3a8;
+  /* ——— Type scale (px) — use exact steps, no interpolation. ——— */
+  --fs-56: 56px;
+  --fs-40: 40px;
+  --fs-30: 30px;
+  --fs-24: 24px;
+  --fs-20: 20px;
+  --fs-17: 17px;
+  --fs-15: 15px;
+  --fs-13: 13px;
+  --fs-12: 12px;
+  --fs-11: 11px;
 
-  /* ——— Links ——— */
-  --link: #5a2670;
-  --link-soft: #ffb5b5;
+  /* ——— Numerics: money and IDs always align. ——— */
+  --num-feat: tabular-nums slashed-zero;
 
-  /* ——— Spacing / type / layout ——— */
+  /* ——— Spacing / layout ——— */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -72,13 +69,82 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 4px;
-
-  --font-display: 'Bricolage Grotesque', 'Arial Narrow', sans-serif;
-  --font-sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
-  --font-serif: var(--font-display);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
 
   --content-max: 1200px;
+
+  /* ===================================================================
+   * Role tokens — the names components reference.
+   * =================================================================== */
+
+  /* Surfaces */
+  --surface: var(--hv-cream);
+  --surface-card: var(--hv-paper);
+  --surface-raised: var(--hv-paper);
+  --surface-input: var(--hv-white);
+  --surface-tint: var(--hv-orange-100);
+  --surface-tint-secondary: var(--hv-terracotta-100);
+  --surface-info: var(--hv-slate-100);
+
+  /* Text */
+  --text-primary: var(--hv-charcoal);
+  --text-muted: var(--hv-charcoal-500);
+  --text-faint: var(--hv-charcoal-300);
+  /* Orange #F27A1A carries 7.4:1 with charcoal and only 2.9:1 with white:
+     labels on orange fills are charcoal, never white. */
+  --text-on-accent: var(--hv-charcoal);
+  --text-on-dark: var(--hv-charcoal);
+
+  /* Borders */
+  --border: var(--hv-border);
+  --border-strong: var(--hv-border-strong);
+
+  /* Accents */
+  --accent: var(--hv-orange);
+  --accent-hover: var(--hv-orange-600);
+  --accent-soft: var(--hv-orange-100);
+  --accent-secondary: var(--hv-terracotta);
+  --accent-secondary-soft: var(--hv-terracotta-100);
+  --accent-info: var(--hv-slate);
+  --accent-info-soft: var(--hv-slate-100);
+
+  /* Status */
+  --income: var(--hv-income);
+  --income-soft: var(--hv-income-100);
+  --expense: var(--hv-expense);
+  --expense-soft: var(--hv-expense-100);
+  --warning: var(--hv-warning);
+  --warning-soft: var(--hv-warning-100);
+  --danger: var(--hv-expense);
+  --danger-soft: var(--hv-expense-100);
+  --success: var(--hv-income);
+  --success-soft: var(--hv-income-100);
+  --info: var(--hv-slate);
+  --info-soft: var(--hv-slate-100);
+
+  /* Links */
+  --link: var(--hv-slate);
+
+  /* Legacy component aliases — map older names onto the system above. */
+  --font-sans: var(--font-ui);
+  --font-serif: var(--font-display);
+  --surface-sunken: var(--hv-cream);
+  --surface-folio: var(--hv-paper);
+  --accent-deep: var(--hv-orange-600);
+  --accent-warm: var(--hv-orange-100);
+  --accent-secondary-bright: var(--hv-orange);
+  --text-on-inverse: var(--hv-charcoal);
+  --surface-inverse: var(--hv-cream);
+  --surface-inverse-raised: var(--hv-paper);
+  --surface-inverse-muted: var(--hv-charcoal-300);
+  --surface-sky: var(--hv-cream);
+  --surface-sky-high: var(--hv-cream);
+  --surface-sky-low: var(--hv-cream);
+  --surface-ridge: var(--hv-charcoal-300);
+  --surface-ridge-deep: var(--hv-charcoal-300);
+  --surface-ground: var(--hv-charcoal-300);
+  --surface-building: var(--hv-charcoal-300);
+  --surface-building-raised: var(--hv-charcoal-300);
 }
