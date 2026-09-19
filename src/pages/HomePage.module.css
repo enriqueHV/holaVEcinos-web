@@ -120,9 +120,10 @@
 
 .hero {
   position: relative;
-  min-height: 86svh;
+  min-height: 84svh;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: 1fr;
+  align-items: center;
   overflow: hidden;
   isolation: isolate;
   background: linear-gradient(
@@ -139,11 +140,41 @@
 }
 
 .heroSkyline {
-  position: relative;
+  position: absolute;
+  inset: auto 0 0 0;
   width: 100%;
-  aspect-ratio: 1600 / 340;
-  min-height: clamp(150px, 26vh, 420px);
+  /* the svg keeps its own aspect, so the city is never cropped or banded */
+  height: auto;
   z-index: 0;
+  pointer-events: none;
+}
+
+
+/* On narrow screens the wide city would over-zoom: keep it as a base band. */
+@media (max-width: 760px) {
+  /* tighter stack, and a slightly raised city band */
+  .heroInner {
+    gap: clamp(0.85rem, 3.5vw, 1.5rem);
+    padding-top: clamp(1.5rem, 4vw, 2.25rem);
+    padding-bottom: clamp(2.5rem, 7vw, 3.75rem);
+  }
+  .heroTitle {
+    font-size: clamp(2.3rem, 11vw, 3rem);
+    line-height: 1.06;
+  }
+  /* .heroContent prefix raises specificity so this beats the base rule above,
+     which otherwise wins on source order alone */
+  .heroContent .heroSubtitle {
+    margin-top: var(--space-4);
+    width: auto;
+    max-width: none;
+    font-size: clamp(0.72rem, 3.5vw, 1rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+  }
+  .heroCtas { margin-top: var(--space-5); }
 }
 
 .heroContent {
@@ -164,23 +195,25 @@
 
 .heroTitle {
   margin: 0;
-  max-width: 16ch;
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 7vw, 56px);
+  font-size: clamp(2.5rem, 5.6vw, 58px);
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1.04;
   letter-spacing: -0.035em;
   color: var(--hv-charcoal);
 }
 
 .heroSubtitle {
   margin: var(--space-5) 0 0;
-  max-width: 42ch;
+  max-width: none;
   font-family: var(--font-ui);
-  font-size: var(--fs-20);
-  font-weight: 400;
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--hv-charcoal-500) 62%, var(--hv-charcoal));
+  font-size: clamp(1.2rem, 1.6vw, 1.48rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  width: max-content;
+  color: color-mix(in srgb, var(--hv-charcoal-500) 26%, var(--hv-charcoal));
 }
 
 .heroCtas {
@@ -1311,12 +1344,17 @@
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
   align-items: center;
   gap: clamp(1.5rem, 4vw, 3.5rem);
-  padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3.5rem) 0;
+  padding: clamp(2rem, 5vw, 3.25rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3.5rem, 7vw, 5.5rem);
 }
 
-/* the dashboard dips into the skyline band, so the product feels present in the scene */
-.heroInner > :last-child {
-  margin-bottom: clamp(-4.5rem, -3vw, -2rem);
+/* Narrows the product surface's column to ~88% and right-aligns it inside that
+   column, so the card renders smaller and reads slightly higher and further to
+   the right while the headline leads. The card's own 3D tilt, shadow and hover
+   lift are untouched: nothing here re-transforms it — the grid box is just smaller. */
+.heroVisual {
+  width: 88%;
+  margin-inline-start: auto;
+  transform: translateY(-3%);
 }
 
 
@@ -1327,13 +1365,62 @@
     padding-bottom: var(--space-5);
   }
 
-  .heroInner > :last-child {
-    margin-bottom: 0;
+  /* stacked layout: the surface keeps its original size and framing */
+  .heroVisual {
+    width: 100%;
+    margin-inline-start: 0;
+    transform: none;
   }
-}
+
+  }
 
 @media (prefers-reduced-motion: reduce) {
-  .heroInner > :last-child {
-    margin-bottom: 0;
   }
+
+/* ============================================================
+   Refinement pass — compact ANTES Y DESPUÉS + connected 4-step journey
+   ============================================================ */
+
+/* The three title lines must survive as three lines, so the inherited 14ch
+   cap is lifted; the gap under the title is what pushes the cards down, so
+   that is the one number reduced — card internals are untouched. */
+.cambioHead h2 {
+  max-width: none;
+  line-height: 1.08;
+  margin-bottom: clamp(0.9rem, 1.8vw, 1.4rem);
+}
+
+/* Slightly shorter tail so the section closes up vertically. */
+.cambio {
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* ——— Step icons: one system — charcoal line work, one orange action element ——— */
+.iconLine { stroke: var(--hv-charcoal); }
+.iconAccent { stroke: var(--hv-orange); }
+
+/* ——— Connectors: a chevron in the gap, pointing 01 → 04. Heavier weight and
+   full brand orange so the progression reads at a glance. Still centred in the
+   existing grid gap, so no layout value changes. ——— */
+.step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc((clamp(0.9rem, 2vw, 1.4rem) / 2 + 9px) * -1);
+  width: 17px;
+  height: 17px;
+  border-top: 2.5px solid var(--hv-orange);
+  border-right: 2.5px solid var(--hv-orange);
+  border-radius: 2px;
+  transform: translateY(-50%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* the last card has nothing to point at */
+.step:last-child::after { display: none; }
+
+/* Below the four-across breakpoint the cards stack, so a sideways chevron
+   would point at nothing: it is removed rather than left dangling. */
+@media (max-width: 1100px) {
+  .step::after { display: none; }
 }

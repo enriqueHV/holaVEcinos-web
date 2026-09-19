@@ -2,55 +2,82 @@
 .skyline {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  /* --sk is published 0..1 by the component on scroll */
 }
 
-/* Depth layers — the sky is the hero gradient showing through. */
-.ridgeFar { fill: #7c716b; opacity: 0.16; }
-.ridgeNear { fill: #7c716b; opacity: 0.24; }
+/* ——— Parallax: far drifts least, midground a touch more, the near towers most ——— */
+.layerFar {
+  transform: translateY(calc((var(--sk, 0.5) - 0.5) * -6px));
+}
 
-.hazeCity { fill: #8a7a6e; opacity: 0.34; }
-.hazeLight { fill: #ffc77a; opacity: 0.5; }
+.layerMid {
+  transform: translateY(calc((var(--sk, 0.5) - 0.5) * -16px));
+}
 
-.ground { fill: #2d2927; }
+.layerNear {
+  transform: translateY(calc((var(--sk, 0.5) - 0.5) * -30px));
+}
 
-.building { transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1); }
-.building:hover { transform: translateY(-4px); }
+/* ——— El Ávila: opaque, coloured near the sky so it reads as distance ——— */
+.avilaFar {
+  fill: #d9c3ab;
+}
 
-.body { fill: #2d2927; transition: fill 320ms ease; }
+.avilaNear {
+  fill: #cbab90;
+}
 
-.furniture { fill: #2d2927; }
+/* ——— Structure: opaque fills only. No translucent shapes anywhere. ——— */
+.furniture { fill: #3d3733; }
+.furnitureGroup { opacity: 1; }
 .dishCore { fill: #4a423d; }
 .panel { fill: #4a423d; opacity: 0.55; }
+.ground { fill: #2f2b28; }
 
-/* Lit windows on every building — the glow lives in the SVG gradient. */
+/* ——— Windows: lit warm by default, never reactive to hover ——— */
 .window {
-  fill: url(#hv-win-grad);
-  opacity: 0.92;
+  fill: #ffc257;
+  opacity: 0.9;
 }
 
-/* Street-level neighbourhood details */
-.tree { fill: #3b332e; }
-.lamp { fill: #4a423d; }
-.lampGlow { fill: #ffc257; opacity: 0.85; }
-
-/* Hover: a wave of light travels up the windows, row by row. */
-.building:hover .window {
-  animation: hv-wave 1.6s ease-in-out infinite;
+/* A few windows drift between warm white, yellow and brand orange. */
+.windowTone {
+  animation: hv-tone var(--dur, 22s) ease-in-out infinite;
   animation-delay: var(--d, 0s);
 }
 
-.building:hover .body { fill: #37312d; }
-
-@keyframes hv-wave {
-  0%, 100% { opacity: 0.92; }
-  38% { opacity: 0.35; }
-  72% { opacity: 1; }
+/* A few windows quietly turn on and off. */
+.windowFlicker {
+  animation: hv-flicker var(--dur, 22s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
 }
 
+@keyframes hv-tone {
+  0%, 58% { fill: #ffc257; }
+  68% { fill: #fff3d6; }
+  78% { fill: #f27a1a; }
+  88% { fill: #ffd98a; }
+  100% { fill: #ffc257; }
+}
+
+@keyframes hv-flicker {
+  0%, 46% { opacity: 0.9; }
+  60% { opacity: 0.34; }
+  74% { opacity: 0.86; }
+  88% { opacity: 0.42; }
+  100% { opacity: 0.9; }
+}
+
+/* ——— Street level ——— */
+.lamp { fill: #4a423d; }
+.lampGlow { fill: #ffc257; opacity: 0.8; }
+
+/* No hover interaction anywhere: the city is ambience, not a toy. */
 @media (prefers-reduced-motion: reduce) {
-  .building, .body { transition: none; }
-  .building:hover { transform: none; }
-  .building:hover .window { animation: none; opacity: 0.92; }
-  .building:hover .body { fill: #37312d; }
+  .layerFar,
+  .layerMid,
+  .layerNear { transform: none; }
+  .windowTone,
+  .windowFlicker { animation: none; }
 }

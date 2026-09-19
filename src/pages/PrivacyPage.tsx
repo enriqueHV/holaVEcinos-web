@@ -28,7 +28,7 @@ export function PrivacyPage() {
             <h2>1. Responsable</h2>
             <p>
               El responsable del tratamiento de los datos enviados desde este sitio es <strong>holaVEcinos</strong>.
-              Para cualquier consulta puedes escribir a <a href="mailto:esucre@holavecinos.app">esucre@holavecinos.app</a>.
+              Para cualquier consulta puedes escribir a <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>.
             </p>
           </section>
 
@@ -68,7 +68,7 @@ export function PrivacyPage() {
             <h2>6. Contacto</h2>
             <p>
               Si tienes dudas sobre esta política o sobre el tratamiento de tus datos, escribe a{' '}
-              <a href="mailto:esucre@holavecinos.app">esucre@holavecinos.app</a>.
+              <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>.
             </p>
           </section>
         </div>

@@ -15,7 +15,7 @@ const pasos = [
   },
   {
     mark: '02',
-    title: 'Validación',
+    title: 'Aprobación',
     text: 'La junta aprueba a los usuarios',
   },
   {
@@ -30,50 +30,57 @@ const pasos = [
   },
 ];
 
-/** Light, friendly line icons — one per step. */
+/**
+ * The four steps as ONE HolaVecinos icon family — not four unrelated marks.
+ * Shared rules: a 44-unit grid, one 2px stroke with round caps and joins, simple
+ * geometric primitives, charcoal line work with a single restrained orange accent
+ * per icon. Each accent carries the ACTION of its step (the lit windows, the
+ * seal's check, the upload arrow, the finish flag), so the four read as
+ * four beats of the same journey.
+ */
 function StepIcon({ mark }: { mark: string }) {
   const common = {
     viewBox: '0 0 44 44',
     fill: 'none',
-    stroke: 'currentColor',
     strokeWidth: 2,
     strokeLinecap: 'round' as const,
     strokeLinejoin: 'round' as const,
   };
   switch (mark) {
+    /* 01 Registro — a building joins, drawn from the same geometry as the skyline towers */
     case '01':
       return (
         <svg {...common} aria-hidden="true">
-          <rect x="7" y="13" width="20" height="24" rx="4" />
-          <rect x="14" y="27" width="6" height="10" rx="1.5" />
-          <path d="M11 20h12" />
-          <circle cx="34" cy="13" r="7" />
-          <path d="M34 10v6M31 13h6" />
+          <rect className={styles.iconLine} x="15.5" y="7" width="16" height="30" rx="2" />
+          <rect className={styles.iconLine} x="6" y="17" width="9.5" height="20" rx="2" />
+          <path className={styles.iconAccent} d="M20.5 13h6M20.5 19h6M9.5 23h2.5" />
         </svg>
       );
+    /* 02 Aprobación — a seal of approval: a badge (two concentric circles) with a
+       single check centred inside it, so the approval reads as official */
     case '02':
       return (
         <svg {...common} aria-hidden="true">
-          <path d="M22 6l12 5v11c0 7-5 11-12 14-7-3-12-7-12-14V11z" />
-          <path d="M16 22l4.5 4.5L29 17" />
+          <circle className={styles.iconLine} cx="22" cy="22" r="15" />
+          <circle className={styles.iconLine} cx="22" cy="22" r="10.5" />
+          <path className={styles.iconAccent} d="M16.75 22.25l3.6 3.6 7.15-7.6" />
         </svg>
       );
+    /* 03 Carga — information goes in: base tray + upload arrow */
     case '03':
       return (
         <svg {...common} aria-hidden="true">
-          <path d="M13 33a6.5 6.5 0 0 1 1-13 8.5 8.5 0 0 1 16-2 6.5 6.5 0 0 1 1 15z" />
-          <path d="M22 36V24" />
-          <path d="M17.5 28.5L22 24l4.5 4.5" />
+          <path className={styles.iconLine} d="M8 27v5.5a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V27" />
+          <path className={styles.iconAccent} d="M22 31V9M15 16l7-7 7 7" />
         </svg>
       );
+    /* 04 Acceso Total — the finish: a flag on a pole standing on the finish line */
     default:
       return (
         <svg {...common} aria-hidden="true">
-          <circle cx="15" cy="15" r="7" />
-          <path d="M20 20l14 14" />
-          <path d="M28 28l3.5-3.5" />
-          <path d="M32 32l3.5-3.5" />
-          <path d="M33 8l1.6 3.4L38 13l-3.4 1.6L33 18l-1.6-3.4L28 13l3.4-1.6z" />
+          <path className={styles.iconLine} d="M15.5 7v30" />
+          <path className={styles.iconAccent} d="M15.5 9l14.5 5.5-14.5 5.5z" />
+          <path className={styles.iconLine} d="M7.5 37h29" />
         </svg>
       );
   }
@@ -132,14 +139,14 @@ const pillars = [
 
 const faqs = [
   {
-    question: '¿Qué pasa después de que envío el formulario?',
+    question: '¿Cuáles son las ventajas?',
     answer:
-      'Revisamos tu mensaje y te contactamos por correo para entender tu caso y coordinar una demostración enfocada en tu condominio.',
+      'HolaVecinos es una plataforma moderna hecha para los propietarios. Nos dimos cuenta de que las plataformas que ya existen no están resolviendo bien dos cosas fundamentales para ellos: la transparencia y la comunicación. HolaVecinos pone esa información en un solo lugar para que los propietarios tengan mayor visibilidad de lo que ocurre en su comunidad.',
   },
   {
     question: '¿Cómo manejan mis datos?',
     answer:
-      'Usamos tus datos solo para responder esta solicitud comercial. No publicamos ni vendemos información personal.',
+      'Los datos de tu edificio son privados y están protegidos. No vendemos ni publicamos tu información. Además, cada usuario tiene acceso únicamente a la información que le corresponde según su rol y permisos.',
   },
   {
     question: '¿Está pensado para la operación en Venezuela?',
@@ -152,23 +159,23 @@ const faqs = [
       'No. No somos una administradora: somos el software que las administradoras, las juntas y los propietarios usan para llevar las cuentas y la operación del condominio. Tu administración sigue siendo la tuya; nosotros le damos la plataforma donde todo queda visible y ordenado.',
   },
   {
-    question: '¿Sirve para junta, administradora y propietarios?',
+    question: '¿Los propietarios pueden modificar las cuentas?',
     answer:
-      'Sí. El sistema trabaja por roles y permisos para que cada perfil vea y ejecute lo que le corresponde.',
+      'No. Cada usuario tiene un rol distinto dentro de HolaVecinos. Propietarios, administradores y junta cuentan con permisos diferentes, para que cada uno pueda consultar o gestionar únicamente la información que le corresponde.',
   },
   {
-    question: '¿Podemos empezar con un solo edificio?',
+    question: '¿Cómo puedo llevar HolaVecinos a mi edificio?',
     answer:
-      'Sí. Se puede iniciar con un edificio y escalar luego a más unidades o más estructuras dentro de la misma operación.',
+      'Regístrate para una demo y conversamos con la junta o administración de tu edificio. Revisamos cómo trabajan actualmente, resolvemos sus dudas y los acompañamos durante la puesta en marcha.',
   },
   {
     question: '¿Necesito cambiar todo mi proceso desde el primer día?',
     answer:
-      'No. Se puede adoptar por etapas, priorizando primero transparencia de movimientos y control de cuotas.',
+      'No. Puedes comenzar poco a poco e incorporar HolaVecinos a tu proceso actual progresivamente, sin tener que cambiar todo desde el primer día.',
   },
 ];
 
-const HERO_TITLE = 'Visibilidad completa de lo que importa en tu';
+const HERO_TITLE_LINES = ['Visibilidad total', 'de lo que importa'];
 
 export function HomePage() {
   const siteUrl = getSiteUrl();
@@ -178,11 +185,11 @@ export function HomePage() {
     '@type': 'Organization',
     name: 'HolaVEcinos',
     url: siteUrl,
-    email: 'esucre@holavecinos.app',
+    email: 'enrique@holavecinos.app',
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        email: 'esucre@holavecinos.app',
+        email: 'enrique@holavecinos.app',
         contactType: 'sales',
         areaServed: 'VE',
         availableLanguage: ['es'],
@@ -196,7 +203,7 @@ export function HomePage() {
         <title>HolaVEcinos | Confianza que se ve. Cuentas que cuadran.</title>
         <meta
           name="description"
-          content="Toda la información financiera y administrativa de tu condominio, en un solo lugar y siempre disponible."
+          content="Toda la información financiera y administrativa, en un solo lugar"
         />
         <link rel="canonical" href={canonicalForPath('/')} />
         <meta property="og:title" content="HolaVEcinos | Confianza que se ve. Cuentas que cuadran." />
@@ -220,7 +227,7 @@ export function HomePage() {
         <nav aria-label="Navegación principal" className={styles.topbarNav}>
           <a href="#cambio">Cambio</a>
           <a href="#pilares">Pilares</a>
-          <a href="#ruta">Ruta</a>
+          <a href="#ruta">Cómo comenzar</a>
           <a href="#faq">FAQ</a>
         </nav>
         <div className={styles.authGroup}>
@@ -236,12 +243,16 @@ export function HomePage() {
           <div className={styles.heroContent}>
             <p className={styles.heroEpigraph}>Cuentas Claras, Comunidades Sanas</p>
             <h1 id="hero-title" className={styles.heroTitle}>
-              {HERO_TITLE}{' '}
-              <span className={styles.heroTitleAccent}>condominio</span>.
+              {HERO_TITLE_LINES[0]}
+              <br />
+              {HERO_TITLE_LINES[1]}
+              <br />
+              en tu <span className={styles.heroTitleAccent}>condominio</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              Toda la información financiera y administrativa de tu condominio, en un solo lugar y
-              siempre disponible.
+              Toda la información
+              <br />
+              financiera y administrativa en un solo lugar
             </p>
             <div className={styles.heroCtas}>
               <a className={styles.ctaPrimary} href="#contacto">
@@ -250,7 +261,9 @@ export function HomePage() {
             </div>
           </div>
 
-          <HeroDashboard />
+          <div className={styles.heroVisual}>
+            <HeroDashboard />
+          </div>
           </div>
 
           <div className={styles.heroSkyline} aria-hidden="true">
@@ -270,8 +283,11 @@ export function HomePage() {
           <div className={styles.cambioHead}>
             <p className={styles.eyebrow}>Antes y después</p>
             <h2 id="cambio-title">
-              El edificio deja de preguntar. Empieza a{' '}
-              <span className={styles.headAccent}>entender</span>.
+              El edificio deja
+              <br />
+              de preguntar y
+              <br />
+              empieza a <span className={styles.headAccent}>entender</span>
             </h2>
           </div>
 
@@ -436,7 +452,7 @@ export function HomePage() {
 
         <section id="pilares" className={styles.pillars} aria-labelledby="pilares-title">
           <div className={styles.pillarsHead}>
-            <p className={styles.eyebrow}>Los tres pilares</p>
+            <p className={styles.eyebrow}>Nuestra filosofía</p>
             <h2 id="pilares-title">
               Hacemos la vida en comunidad <span className={styles.headAccent}>más fácil</span>
             </h2>
@@ -458,12 +474,12 @@ export function HomePage() {
 
         <section id="ruta" className={styles.ruta} aria-labelledby="ruta-title">
           <div className={styles.rutaHead}>
-            <p className={styles.eyebrow}>Tu ruta</p>
+            <p className={styles.eyebrow}>Cómo comenzar</p>
             <h2 id="ruta-title">
               Así de fácil es <span className={styles.headAccent}>comenzar</span>
             </h2>
             <p className={styles.rutaLede}>
-              Cuatro pasos. Sin manuales, sin reuniones eternas, sin cambiar tu administración.
+              Cuatro pasos. Te acompañamos de principio a fin.
             </p>
           </div>
 
@@ -486,14 +502,13 @@ export function HomePage() {
             <a className={styles.ctaPrimary} href="#contacto">
               Registrarse para una demo
             </a>
-            <span className={styles.rutaNote}>Te contactamos y lo dejamos andando contigo</span>
           </div>
         </section>
 
 
         <section id="faq" className={styles.faq} aria-labelledby="faq-title">
           <h2 id="faq-title">
-            Antes de <span className={styles.headAccent}>escribir</span>
+            ¿Alguna <span className={styles.headAccent}>duda</span>?
           </h2>
           <div className={styles.faqList}>
             {faqs.map((item, index) => (
@@ -515,7 +530,7 @@ export function HomePage() {
             Cuéntanos de tu <span className={styles.headAccent}>condominio</span>
           </h2>
             <p>
-              Te respondemos a <a href="mailto:esucre@holavecinos.app">esucre@holavecinos.app</a>.
+              Te respondemos a <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>.
               Sin compromiso de compra en este primer mensaje.
             </p>
           </div>

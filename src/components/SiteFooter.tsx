@@ -18,7 +18,7 @@ export function SiteFooter() {
           </span>
         </p>
         <div className={styles.meta}>
-          <a href="mailto:esucre@holavecinos.app">esucre@holavecinos.app</a>
+          <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>
           <Link to="/privacidad">Política de privacidad</Link>
           <span className={styles.todo}>TODO: redes oficiales</span>
         </div>

@@ -180,7 +180,7 @@ export function ContactForm() {
     } catch {
       setStatus('error');
       setGeneralErrorMessage(
-        'Ocurrió un problema de conexión. Intenta nuevamente o escríbenos a esucre@holavecinos.app.',
+        'Ocurrió un problema de conexión. Intenta nuevamente o escríbenos a enrique@holavecinos.app.',
       );
     }
   }
@@ -349,7 +349,7 @@ export function ContactForm() {
         </div>
 
         <div className={`${styles.field} ${styles.full}`}>
-          <label htmlFor="message">Mensaje*</label>
+          <label htmlFor="message">Mensaje</label>
           <textarea
             ref={messageRef}
             id="message"
