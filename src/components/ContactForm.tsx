@@ -5,11 +5,14 @@ import {
   type ContactSubmissionField,
   UNIT_RANGE_OPTIONS,
 } from '../lib/contactSchema';
+import {
+  CONTACT_FALLBACK_EMAIL,
+  readContactResponse,
+  type ContactFieldErrors as FieldErrors,
+} from '../lib/contactResponse';
 import styles from './ContactForm.module.css';
 
 type ContactFormState = 'idle' | 'submitting' | 'success' | 'error';
-
-type FieldErrors = Partial<Record<ContactSubmissionField, string>>;
 
 type FormValues = {
   name: string;
@@ -22,20 +25,6 @@ type FormValues = {
   consent: boolean;
   website: string;
 };
-
-type ApiSuccess = {
-  ok: true;
-  message: string;
-  warning?: string;
-};
-
-type ApiError = {
-  ok: false;
-  message: string;
-  fieldErrors?: FieldErrors;
-};
-
-type ApiResponse = ApiSuccess | ApiError;
 
 const initialValues: FormValues = {
   name: '',
@@ -163,13 +152,13 @@ export function ContactForm() {
         body: JSON.stringify(values),
       });
 
-      const payload = (await response.json()) as ApiResponse;
+      const payload = await readContactResponse(response);
 
-      if (!response.ok || !payload.ok) {
-        const fieldErrors = payload.ok ? {} : payload.fieldErrors ?? {};
+      if (!payload.ok) {
+        const fieldErrors = payload.fieldErrors ?? {};
         setErrors(fieldErrors);
         setStatus('error');
-        setGeneralErrorMessage(payload.message || 'No pudimos enviar el formulario en este momento.');
+        setGeneralErrorMessage(payload.message);
         focusField(pickFirstErrorField(fieldErrors));
         return;
       }
@@ -180,7 +169,7 @@ export function ContactForm() {
     } catch {
       setStatus('error');
       setGeneralErrorMessage(
-        'Ocurrió un problema de conexión. Intenta nuevamente o escríbenos a enrique@holavecinos.app.',
+        `Ocurrió un problema de conexión. Intenta nuevamente o escríbenos a ${CONTACT_FALLBACK_EMAIL}.`,
       );
     }
   }

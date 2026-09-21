@@ -18,5 +18,13 @@
     "noFallthroughCasesInSwitch": true,
     "types": ["node"]
   },
-  "include": ["vite.config.ts", "server", "api", "src/lib/contactSchema.ts"]
+  "include": [
+    "vite.config.ts",
+    "server",
+    "api",
+    "functions",
+    "src/lib/contactSchema.ts",
+    "src/lib/contactResponse.ts",
+    "src/lib/contactResponse.test.ts"
+  ]
 }

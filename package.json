@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
-    "check": "npm run lint && npm run typecheck"
+    "test": "tsx --test server/contactHandler.test.ts functions/api/contact.test.ts src/lib/contactResponse.test.ts",
+    "check": "npm run lint && npm run typecheck && npm test"
   },
   "dependencies": {
     "@fontsource/bricolage-grotesque": "^5.3.0",
@@ -39,6 +40,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.18.1",
     "vite": "^6.0.5"
