@@ -71,11 +71,6 @@
   text-decoration: none;
 }
 
-.todo {
-  color: var(--hv-charcoal-300);
-  font-size: var(--fs-13);
-}
-
 .copy {
   margin: var(--space-2) 0 0;
   color: var(--hv-charcoal-500);
