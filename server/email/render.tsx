@@ -1,3 +1,4 @@
+import React from 'react';
 import { render } from '@react-email/render';
 import { AdminNotificationEmail, type AdminNotificationEmailProps } from './AdminNotificationEmail';
 import { ConfirmationEmail, type ConfirmationEmailProps } from './ConfirmationEmail';

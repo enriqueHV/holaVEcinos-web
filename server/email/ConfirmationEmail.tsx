@@ -1,3 +1,4 @@
+import React from 'react';
 import { Heading, Text } from '@react-email/components';
 import { Layout } from './Layout';
 import { emailColors, emailFonts } from './tokens';
