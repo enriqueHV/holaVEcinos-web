@@ -8,6 +8,7 @@ import {
   unitRangeLabelByValue,
 } from '../src/lib/contactSchema';
 import { CONTACT_FALLBACK_EMAIL } from '../src/lib/contactResponse';
+import { renderAdminNotificationEmail, renderConfirmationEmail } from './email/render';
 
 /**
  * Variables que lee el handler. Cada runtime las entrega a su manera (`process.env` en Vercel y
@@ -106,37 +107,6 @@ function toFieldErrors(error: ZodError<ContactSubmission>): Partial<Record<Conta
   return fieldErrors;
 }
 
-function buildInternalNotificationText(submission: ContactSubmission, ipAddress: string): string {
-  return [
-    'Nuevo lead desde holavecinos.app',
-    '',
-    `Nombre: ${submission.name}`,
-    `Email: ${submission.email}`,
-    `Teléfono: ${submission.phone || 'No indicado'}`,
-    `Condominio/Organización: ${submission.organizationName}`,
-    `Rol: ${roleLabelByValue[submission.role]}`,
-    `Unidades: ${unitRangeLabelByValue[submission.unitRange]}`,
-    '',
-    'Mensaje:',
-    submission.message,
-    '',
-    `Consentimiento de datos: Sí`,
-    `IP origen: ${ipAddress}`,
-  ].join('\n');
-}
-
-function buildProspectConfirmationText(submission: ContactSubmission): string {
-  return [
-    `Hola ${submission.name},`,
-    '',
-    'Recibimos tu solicitud correctamente. Gracias por tu interés en HolaVecinos.',
-    '',
-    'Ya tenemos tu información y nos pondremos en contacto contigo pronto.',
-    '',
-    'Equipo HolaVecinos',
-  ].join('\n');
-}
-
 function resolveIpAddress(ipAddress: string): string {
   const normalized = ipAddress.trim();
   return normalized.length > 0 ? normalized : 'ip-no-disponible';
@@ -206,12 +176,23 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
   }
 
   const resend = new Resend(resendApiKey);
+  const adminEmail = await renderAdminNotificationEmail({
+    name: submission.name,
+    email: submission.email,
+    phone: submission.phone,
+    organizationName: submission.organizationName,
+    roleLabel: roleLabelByValue[submission.role],
+    unitRangeLabel: unitRangeLabelByValue[submission.unitRange],
+    message: submission.message,
+    ipAddress: safeIpAddress,
+  });
   const leadMessage = await resend.emails.send({
     from: resendFromEmail,
     to: destinationEmail,
     replyTo: submission.email,
-    subject: `Nuevo lead web: ${submission.organizationName}`,
-    text: buildInternalNotificationText(submission, safeIpAddress),
+    subject: adminEmail.subject,
+    html: adminEmail.html,
+    text: adminEmail.text,
   });
 
   if (leadMessage.error) {
@@ -230,11 +211,13 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
     };
   }
 
+  const confirmationEmail = await renderConfirmationEmail({ name: submission.name });
   const confirmationMessage = await resend.emails.send({
     from: resendFromEmail,
     to: submission.email,
-    subject: 'Recibimos tu solicitud — HolaVecinos',
-    text: buildProspectConfirmationText(submission),
+    subject: confirmationEmail.subject,
+    html: confirmationEmail.html,
+    text: confirmationEmail.text,
   });
 
   if (confirmationMessage.error) {

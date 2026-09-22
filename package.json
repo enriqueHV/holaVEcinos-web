@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
-    "test": "tsx --test server/contactHandler.test.ts functions/api/contact.test.ts src/lib/contactResponse.test.ts",
+    "test": "tsx --tsconfig tsconfig.node.json --test server/contactHandler.test.ts functions/api/contact.test.ts src/lib/contactResponse.test.ts server/email/ConfirmationEmail.test.ts server/email/AdminNotificationEmail.test.ts",
     "check": "npm run lint && npm run typecheck && npm test"
   },
   "dependencies": {
