@@ -1,7 +1,7 @@
 import type { ContactSubmissionField } from './contactSchema';
 
 /** Buzón que se muestra cuando el formulario no se pudo enviar. */
-export const CONTACT_FALLBACK_EMAIL = 'enrique@holavecinos.app';
+export const CONTACT_FALLBACK_EMAIL = 'info@holavecinos.app';
 
 export type ContactFieldErrors = Partial<Record<ContactSubmissionField, string>>;
 

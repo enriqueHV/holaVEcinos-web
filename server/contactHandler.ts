@@ -129,16 +129,11 @@ function buildProspectConfirmationText(submission: ContactSubmission): string {
   return [
     `Hola ${submission.name},`,
     '',
-    'Recibimos tu solicitud en holaVEcinos.',
-    'Nuestro equipo revisará tu mensaje y te responderá por correo en el menor tiempo posible.',
+    'Recibimos tu solicitud correctamente. Gracias por tu interés en HolaVecinos.',
     '',
-    'Resumen de tu solicitud:',
-    `- Condominio/organización: ${submission.organizationName}`,
-    `- Rol: ${roleLabelByValue[submission.role]}`,
-    `- Unidades: ${unitRangeLabelByValue[submission.unitRange]}`,
+    'Ya tenemos tu información y nos pondremos en contacto contigo pronto.',
     '',
-    'Gracias por escribirnos.',
-    'Equipo holaVEcinos',
+    'Equipo HolaVecinos',
   ].join('\n');
 }
 
@@ -238,7 +233,7 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
   const confirmationMessage = await resend.emails.send({
     from: resendFromEmail,
     to: submission.email,
-    subject: 'Recibimos tu solicitud en holaVEcinos',
+    subject: 'Recibimos tu solicitud — HolaVecinos',
     text: buildProspectConfirmationText(submission),
   });
 

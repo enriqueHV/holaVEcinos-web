@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import styles from './Skyline.module.css';
 
@@ -21,8 +21,10 @@ import styles from './Skyline.module.css';
  * The canvas is 1600 × 560 and CSS lets the svg scale by width (`height: auto`), so the
  * drawing is never cropped at the top: no horizontal band of sliced buildings.
  *
- * Motion stays ambient and non-interactive: each plane parallaxes a few pixels with scroll
- * (--sk, 0..1) and a handful of windows drift colour or turn on and off.
+ * Motion is horizontal only. The planes drift a couple of pixels sideways with scroll, but
+ * they NEVER move vertically: every silhouette keeps its base welded to the ground line, so
+ * the city can never lift off the street. On load a single wave of light sweeps left to right
+ * through the windows; after it passes, only a few windows drift colour or blink quietly.
  */
 
 const VIEW_W = 1600;
@@ -31,6 +33,11 @@ const GROUND = 546;
 
 /* Small global nudge used to keep the tallest roofline clear of the hero copy. */
 const TOP_SHIFT = 0;
+
+/* How long the opening wave takes to cross the whole skyline, left → right. */
+const WAVE_TRAVEL_MS = 1150;
+/* Wave class total lifetime: travel + the settle tail. */
+const WAVE_LIFETIME_MS = 3600;
 
 type Building = { x: number; w: number; top: number; roof?: number };
 
@@ -250,12 +257,15 @@ function Windows({
   shift,
   seedBase,
   animate,
+  wave,
 }: {
   list: Building[];
   bottom: number;
   shift: number;
   seedBase: number;
   animate: boolean;
+  /** true while the opening light-wave class is mounted on the root svg */
+  wave: boolean;
 }) {
   return (
     <>
@@ -276,9 +286,19 @@ function Windows({
                 let cls = styles.window;
                 if (animate && (seed === 0 || seed === 5)) cls = `${styles.window} ${styles.windowTone}`;
                 else if (animate && seed === 3) cls = `${styles.window} ${styles.windowFlicker}`;
+                if (wave) cls += ` ${styles.windowWave}`;
 
                 const dur = 18 + ((r + c + i) % 7) * 2;
                 const del = -((r * 1.7 + c * 2.3 + i * 3.1) % 14);
+
+                /* Wave timing is a function of the window's x position, so the light
+                   genuinely travels left → right. A small deterministic jitter stops it
+                   from reading as a hard vertical front: neighbours light at slightly
+                   different moments instead of switching all at once. */
+                const wdel = Math.round(
+                  ((b.x + g.padX + c * g.pitchX) / VIEW_W) * WAVE_TRAVEL_MS +
+                    ((r * 3 + c * 5 + i * 7) % 5) * 58,
+                );
 
                 return (
                   <rect
@@ -289,7 +309,7 @@ function Windows({
                     height={g.winH}
                     rx={1.5}
                     className={cls}
-                    style={{ '--dur': `${dur}s`, '--d': `${del.toFixed(2)}s` } as CSSProperties}
+                    style={{ '--dur': `${dur}s`, '--d': `${del.toFixed(2)}s`, '--wdel': `${wdel}ms` } as CSSProperties}
                   />
                 );
               }),
@@ -303,6 +323,45 @@ function Windows({
 
 export function Skyline() {
   const ref = useRef<SVGSVGElement>(null);
+  /* Drives the one-shot opening wave. Fires once, never again on re-scroll. */
+  const [wave, setWave] = useState(false);
+  const waveFired = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const fire = () => {
+      if (waveFired.current) return;
+      waveFired.current = true;
+      setWave(true);
+      /* the class is removed after the wave has fully settled, so it can never loop */
+      window.setTimeout(() => setWave(false), WAVE_LIFETIME_MS);
+    };
+
+    const host = el.closest('section') ?? el.parentElement ?? el;
+    let io: IntersectionObserver | undefined;
+    if (typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            fire();
+            io?.disconnect();
+          }
+        },
+        { threshold: 0.25 },
+      );
+      io.observe(host);
+    }
+    /* fallback so the wave still plays if the observer never fires */
+    const fallback = window.setTimeout(fire, 1000);
+
+    return () => {
+      io?.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   /* Scroll parallax: publishes --sk (0..1) on the svg root, throttled by rAF. */
   useEffect(() => {
@@ -335,7 +394,7 @@ export function Skyline() {
   return (
     <svg
       ref={ref}
-      className={styles.skyline}
+      className={wave ? `${styles.skyline} ${styles.waving}` : styles.skyline}
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
@@ -362,19 +421,26 @@ export function Skyline() {
       {/* ——— Distant plane ——— */}
       <g className={styles.layerFar}>
         <Bodies list={farBuildings} bottom={GROUND} fill={FAR_FILL} shift={TOP_SHIFT} seed={-1} />
-        <Windows list={farBuildings} bottom={GROUND} shift={TOP_SHIFT} seedBase={41} animate={false} />
+        <Windows
+          list={farBuildings}
+          bottom={GROUND}
+          shift={TOP_SHIFT}
+          seedBase={41}
+          animate={false}
+          wave={wave}
+        />
       </g>
 
       {/* ——— Midground ——— */}
       <g className={styles.layerMid}>
         <Bodies list={midBuildings} bottom={GROUND} fill={MID_FILL} shift={TOP_SHIFT} seed={0} />
-        <Windows list={midBuildings} bottom={GROUND} shift={TOP_SHIFT} seedBase={0} animate />
+        <Windows list={midBuildings} bottom={GROUND} shift={TOP_SHIFT} seedBase={0} animate wave={wave} />
       </g>
 
       {/* ——— Foreground: cropped by the bottom and by the page edges ——— */}
       <g className={styles.layerNear}>
         <Bodies list={nearBuildings} bottom={GROUND + 40} fill={NEAR_FILL} shift={TOP_SHIFT} seed={0} />
-        <Windows list={nearBuildings} bottom={GROUND + 40} shift={TOP_SHIFT} seedBase={7} animate />
+        <Windows list={nearBuildings} bottom={GROUND + 40} shift={TOP_SHIFT} seedBase={7} animate wave={wave} />
       </g>
 
       {/* ——— Street level ——— */}

@@ -8,10 +8,10 @@ export function PrivacyPage() {
   return (
     <>
       <Helmet>
-        <title>Política de privacidad | holaVEcinos</title>
+        <title>Política de privacidad | HolaVecinos</title>
         <meta
           name="description"
-          content="Política de privacidad de holaVEcinos para solicitudes comerciales recibidas desde el sitio web."
+          content="Política de privacidad de HolaVecinos para solicitudes comerciales recibidas desde el sitio web."
         />
         <link rel="canonical" href={canonicalForPath('/privacidad')} />
       </Helmet>
@@ -27,8 +27,8 @@ export function PrivacyPage() {
           <section>
             <h2>1. Responsable</h2>
             <p>
-              El responsable del tratamiento de los datos enviados desde este sitio es <strong>holaVEcinos</strong>.
-              Para cualquier consulta puedes escribir a <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>.
+              El responsable del tratamiento de los datos enviados desde este sitio es <strong>HolaVecinos</strong>.
+              Para cualquier consulta puedes escribir a <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>.
             </p>
           </section>
 
@@ -60,7 +60,7 @@ export function PrivacyPage() {
             <h2>5. Transferencias y proveedores</h2>
             <p>
               El envío del formulario utiliza servicios de correo transaccional para entregar el mensaje al equipo de
-              holaVEcinos y enviar confirmación al solicitante.
+              HolaVecinos y enviar confirmación al solicitante.
             </p>
           </section>
 
@@ -68,7 +68,7 @@ export function PrivacyPage() {
             <h2>6. Contacto</h2>
             <p>
               Si tienes dudas sobre esta política o sobre el tratamiento de tus datos, escribe a{' '}
-              <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>.
+              <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>.
             </p>
           </section>
         </div>

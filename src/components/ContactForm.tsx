@@ -78,7 +78,6 @@ export function ContactForm() {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<ContactFormState>('idle');
-  const [responseMessage, setResponseMessage] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
   const [generalErrorMessage, setGeneralErrorMessage] = useState('');
   const successMessageRef = useRef<HTMLDivElement | null>(null);
@@ -164,7 +163,6 @@ export function ContactForm() {
       }
 
       setStatus('success');
-      setResponseMessage(payload.message);
       setWarningMessage(payload.warning ?? '');
     } catch {
       setStatus('error');
@@ -183,8 +181,10 @@ export function ContactForm() {
         aria-live="polite"
         aria-atomic="true"
       >
-        <h3>Gracias por escribirnos</h3>
-        <p>{responseMessage}</p>
+        <h3>¡Solicitud enviada correctamente!</h3>
+        <p>
+          Gracias por contactarnos. Recibimos tu solicitud y nos pondremos en contacto contigo pronto.
+        </p>
         {warningMessage && <p className={styles.warningText}>{warningMessage}</p>}
       </div>
     );
@@ -381,7 +381,7 @@ export function ContactForm() {
               aria-describedby={errors.consent ? 'consent-error' : undefined}
             />
             <span>
-              Autorizo el tratamiento de mis datos para que holaVEcinos me contacte sobre esta solicitud.*
+              Autorizo el tratamiento de mis datos para que HolaVecinos me contacte sobre esta solicitud.*
             </span>
           </label>
           {errors.consent && (

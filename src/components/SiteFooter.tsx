@@ -18,7 +18,7 @@ export function SiteFooter() {
           </span>
         </p>
         <div className={styles.meta}>
-          <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>
+          <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>
           <Link to="/privacidad">Política de privacidad</Link>
         </div>
         <p className={styles.copy}>© {year} HolaVEcinos. Todos los derechos reservados.</p>

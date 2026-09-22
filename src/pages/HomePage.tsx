@@ -16,17 +16,17 @@ const pasos = [
   {
     mark: '02',
     title: 'Aprobación',
-    text: 'La junta aprueba a los usuarios',
+    text: 'La junta invita y aprueba a los propietarios del condominio',
   },
   {
     mark: '03',
     title: 'Carga',
-    text: 'El administrador comienza a subir la información',
+    text: 'El administrador sube la información de la propiedad',
   },
   {
     mark: '04',
     title: 'Acceso Total',
-    text: '¡Listo! Tienes visibilidad y control 24/7 sin tener que pelear con nadie',
+    text: '¡Listo! Tienes visibilidad y control 24/7, sin tener que pedir a nadie',
   },
 ];
 
@@ -96,7 +96,7 @@ const ticker = [
 
 const flujoAntes = ['La junta sabe', 'El propietario pregunta', 'La junta explica'];
 
-const flujoDespues = ['La junta registra', 'HolaVEcinos muestra', 'El propietario entiende'];
+const flujoDespues = ['La junta registra', 'HolaVecinos muestra', 'El propietario entiende'];
 
 /** One shared renderer for both sides, so ANTES and DESPUÉS stay perfectly parallel. */
 function FlowRow({ steps, tone }: { steps: string[]; tone: 'before' | 'after' }) {
@@ -154,7 +154,7 @@ const faqs = [
       'Sí. La plataforma contempla prácticas locales como seguimiento en USD con equivalencia referencial en bolívares según tasa BCV.',
   },
   {
-    question: '¿HolaVEcinos es una administradora?',
+    question: '¿HolaVecinos es una administradora?',
     answer:
       'No. No somos una administradora: somos el software que las administradoras, las juntas y los propietarios usan para llevar las cuentas y la operación del condominio. Tu administración sigue siendo la tuya; nosotros le damos la plataforma donde todo queda visible y ordenado.',
   },
@@ -183,13 +183,13 @@ export function HomePage() {
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'HolaVEcinos',
+    name: 'HolaVecinos',
     url: siteUrl,
-    email: 'enrique@holavecinos.app',
+    email: 'info@holavecinos.app',
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        email: 'enrique@holavecinos.app',
+        email: 'info@holavecinos.app',
         contactType: 'sales',
         areaServed: 'VE',
         availableLanguage: ['es'],
@@ -200,13 +200,13 @@ export function HomePage() {
   return (
     <>
       <Helmet>
-        <title>HolaVEcinos | Confianza que se ve. Cuentas que cuadran.</title>
+        <title>HolaVecinos | Confianza que se ve. Cuentas que cuadran.</title>
         <meta
           name="description"
           content="Toda la información financiera y administrativa, en un solo lugar"
         />
         <link rel="canonical" href={canonicalForPath('/')} />
-        <meta property="og:title" content="HolaVEcinos | Confianza que se ve. Cuentas que cuadran." />
+        <meta property="og:title" content="HolaVecinos | Confianza que se ve. Cuentas que cuadran." />
         <meta
           property="og:description"
           content="Transparencia financiera y operación diaria del condominio en un solo entorno."
@@ -217,7 +217,7 @@ export function HomePage() {
       </Helmet>
 
       <header className={styles.topbar}>
-        <a className={styles.topbarBrand} href="#inicio" aria-label="HolaVEcinos, inicio">
+        <a className={styles.topbarBrand} href="#inicio" aria-label="HolaVecinos, inicio">
           <span className={styles.wordmark}>
             Hola
             <span className={styles.brandVe}>VE</span>
@@ -226,7 +226,7 @@ export function HomePage() {
         </a>
         <nav aria-label="Navegación principal" className={styles.topbarNav}>
           <a href="#cambio">Cambio</a>
-          <a href="#pilares">Pilares</a>
+          <a href="#pilares">Filosofía</a>
           <a href="#ruta">Cómo comenzar</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -377,14 +377,29 @@ export function HomePage() {
             </article>
 
             <div className={styles.diptychArrow} aria-hidden="true">
-              <span>→</span>
+              {/* Stroked vector arrow. strokeWidth is the single weight token for this mark:
+                  2.4 gives a shaft of roughly 1/13 of the circle diameter — bold enough to
+                  read as a transition, light enough not to compete with the panels.
+                  The viewBox min-x of 1 nudges the ink left one unit to offset the
+                  arrowhead's optical mass so it sits visually centred in the ring. */}
+              <svg
+                viewBox="1 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.4}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4.5 12h14.5" />
+                <path d="M13 6l6 6-6 6" />
+              </svg>
             </div>
 
             {/* ——— Después ——— */}
             <article className={`${styles.panel} ${styles.panelAfter}`}>
               <header className={styles.panelHead}>
                 <p className={styles.panelLabelNow}>Después</p>
-                <h3 className={styles.panelTitle}>El modelo HolaVEcinos</h3>
+                <h3 className={styles.panelTitle}>El modelo HolaVecinos</h3>
               </header>
 
               <FlowRow steps={flujoDespues} tone="after" />
@@ -434,7 +449,7 @@ export function HomePage() {
 
               <ul className={styles.gainList}>
                 <li>Un solo lugar: movimientos, facturas y votaciones</li>
-                <li>La junta registra una vez. HolaVEcinos responde por ella</li>
+                <li>La junta registra una vez. HolaVecinos responde por ella</li>
                 <li>El propietario entra cuando quiere y ve todo, sin pedir permiso</li>
               </ul>
 
@@ -530,7 +545,7 @@ export function HomePage() {
             Cuéntanos de tu <span className={styles.headAccent}>condominio</span>
           </h2>
             <p>
-              Te respondemos a <a href="mailto:enrique@holavecinos.app">enrique@holavecinos.app</a>.
+              Te respondemos a <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>.
               Sin compromiso de compra en este primer mensaje.
             </p>
           </div>

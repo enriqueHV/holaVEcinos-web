@@ -27,7 +27,8 @@
 
 /* Auth pair pinned to the far right of the bar */
 .authGroup {
-  margin-left: auto;
+  /* no auto margin: .topbarNav owns the free space, so the menu is pushed right and
+     lands flush against the login button instead of leaving a void between them */
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -38,7 +39,10 @@
   flex-wrap: wrap;
   gap: var(--space-4);
   justify-content: flex-end;
+  /* the single flexible track: pushes the whole menu to the right edge of the bar */
   margin-left: auto;
+  /* breathing room so the last item never touches the login button */
+  margin-right: var(--space-6);
 }
 
 .topbarBrand {
@@ -179,6 +183,11 @@
 
 .heroContent {
   align-self: center;
+  /* Lifted a touch so the CTA lands in open sky, clear of the rooflines. Uses `top`,
+     not transform: the `rise` entrance animation owns this element's transform (and
+     with fill-mode both it keeps it applied), so a transform here would be overridden. */
+  position: relative;
+  top: -1.25rem;
   width: min(100%, 940px);
   padding: clamp(3.5rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 5vh, 3.5rem);
   animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -398,17 +407,28 @@
 }
 
 .diptychArrow {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   align-self: center;
-  width: 44px;
-  height: 44px;
+  width: 76px;
+  height: 76px;
   border-radius: 999px;
   background: var(--hv-paper);
   border: var(--hv-rule);
   color: var(--hv-orange);
-  font-size: var(--fs-17);
-  box-shadow: 0 10px 24px -18px rgba(42, 46, 56, 0.5);
+  /* line-height: 0 removes the text baseline offset that pushed the old glyph
+     off optical centre; the stroked SVG below is centred geometrically. */
+  line-height: 0;
+  box-shadow: 0 14px 30px -18px rgba(42, 46, 56, 0.55);
+}
+
+/* The arrow itself: one thick stroke, symmetric inside the 24-unit box, so it
+   scales as a unit and stays dead centre in the circle on every viewport. */
+.diptychArrow svg {
+  display: block;
+  width: 58px;
+  height: 58px;
 }
 
 .panel {
@@ -875,9 +895,9 @@
 
 .ruta {
   padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
-  background:
-    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--hv-orange) 8%, transparent), transparent 42%),
-    var(--hv-cream);
+  /* rhythm: #cambio white · #pilares beige · #ruta white · #faq beige.
+     The old cream + orange radial wash broke the alternation, so it goes. */
+  background: var(--hv-paper);
 }
 
 .ruta h2 {
@@ -951,7 +971,7 @@
 
 .faq {
   padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
-  background: var(--hv-paper);
+  background: var(--hv-cream);
   border-top: var(--hv-rule);
 }
 
@@ -1423,4 +1443,45 @@
    would point at nothing: it is removed rather than left dangling. */
 @media (max-width: 1100px) {
   .step::after { display: none; }
+}
+
+/* ============================================================
+   MOBILE ONLY — breathing room for the ANTES / DESPUÉS beats
+   Scoped to the phone breakpoint; desktop and tablet keep the
+   three-across row untouched. The beats stack so each one owns
+   the full panel width instead of being crushed into ~86px,
+   which is what forced "El propietario / pregunta" onto three
+   awkward lines.
+   ============================================================ */
+@media (max-width: 768px) {
+  .flowRow {
+    /* stacked, not squeezed side by side */
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .flowPill {
+    /* full width and free to size itself: no fixed track, no forced breaks */
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0.7rem 0.9rem;
+    line-height: 1.35;
+  }
+
+  .flowArrow {
+    /* the connector turns to point down, matching the stacked flow */
+    flex: none;
+    width: auto;
+    margin: 0.15rem auto;
+    transform: rotate(90deg);
+    line-height: 1;
+  }
+
+  .panel {
+    /* a touch more internal padding so the text sits comfortably */
+    padding: clamp(1.35rem, 5.5vw, 1.9rem);
+  }
 }
