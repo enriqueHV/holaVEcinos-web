@@ -66,14 +66,14 @@
 }
 
 .topbarNav a:hover {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
   text-decoration: none;
 }
 
 .topbarNav a:focus-visible,
 .authLogin:focus-visible,
 .authPrimary:focus-visible {
-  outline: 2px solid var(--hv-orange);
+  outline: 2px solid var(--hv-orange-700);
   outline-offset: 3px;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .authLogin:hover {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
   border-color: var(--hv-border-strong);
   text-decoration: none;
 }
@@ -269,13 +269,13 @@
 
 .ctaGhost:hover {
   border-color: var(--hv-orange);
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
   text-decoration: none;
 }
 
 .ctaPrimary:focus-visible,
 .ctaGhost:focus-visible {
-  outline: 2px solid var(--hv-orange);
+  outline: 2px solid var(--hv-orange-700);
   outline-offset: 3px;
 }
 
@@ -343,7 +343,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .eyebrowLight {
@@ -352,7 +352,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .problemBody h2 {
@@ -416,7 +416,7 @@
   border-radius: 999px;
   background: var(--hv-paper);
   border: var(--hv-rule);
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
   /* line-height: 0 removes the text baseline offset that pushed the old glyph
      off optical centre; the stroked SVG below is centred geometrically. */
   line-height: 0;
@@ -471,11 +471,11 @@
 }
 
 .panelLabel {
-  color: var(--hv-charcoal-300);
+  color: var(--hv-charcoal-500);
 }
 
 .panelLabelNow {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .panelTitle {
@@ -625,7 +625,7 @@
 
 .gainList li::before {
   content: '✓';
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .panelOutcome {
@@ -702,7 +702,7 @@
 }
 
 .flowAfter .flowArrow {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 
@@ -797,7 +797,7 @@
   font-size: var(--fs-15);
   font-weight: 600;
   font-variant-numeric: var(--num-feat);
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .pillar h3 {
@@ -1015,11 +1015,11 @@
   font-weight: 500;
   font-size: var(--fs-15);
   font-variant-numeric: var(--num-feat);
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .faqItem summary:focus-visible {
-  outline: 2px solid var(--hv-orange);
+  outline: 2px solid var(--hv-orange-700);
   outline-offset: 3px;
 }
 
@@ -1064,7 +1064,7 @@
 }
 
 .contactPane a {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -1299,7 +1299,7 @@
   border-radius: 15px;
   background: color-mix(in srgb, var(--hv-orange) 12%, var(--hv-paper));
   border: 1px solid color-mix(in srgb, var(--hv-orange) 26%, transparent);
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .stepIcon svg {
@@ -1312,7 +1312,7 @@
   font-size: var(--fs-11);
   font-weight: 600;
   letter-spacing: 0.14em;
-  color: var(--hv-charcoal-300);
+  color: var(--hv-charcoal-500);
 }
 
 .stepTitle {
@@ -1417,7 +1417,7 @@
 
 /* ——— Step icons: one system — charcoal line work, one orange action element ——— */
 .iconLine { stroke: var(--hv-charcoal); }
-.iconAccent { stroke: var(--hv-orange); }
+.iconAccent { stroke: var(--hv-orange-700); }
 
 /* ——— Connectors: a chevron in the gap, pointing 01 → 04. Heavier weight and
    full brand orange so the progression reads at a glance. Still centred in the

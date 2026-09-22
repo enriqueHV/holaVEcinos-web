@@ -10,8 +10,9 @@
  */
 :root {
   /* ——— Brand ——— */
-  --hv-orange: #f27a1a; /* primary — CTAs, active nav, the "VE" in wordmark */
-  --hv-orange-600: #d96712; /* hover */
+  --hv-orange: #f27a1a; /* primary — CTAs, active nav, the "VE" in wordmark. Fill only: 2.9:1 on white, too low for text */
+  --hv-orange-600: #d96712; /* hover fill. As text: 3.25:1 on cream — bold 24px+ headings only */
+  --hv-orange-700: #a84c0d; /* text-safe orange — 4.5:1+ on cream/paper/orange-100. Use for orange TEXT, icons, and focus rings on light surfaces */
   --hv-orange-100: #fdecd9; /* tint — chips, subtle fills */
   --hv-terracotta: #c0532e; /* secondary accent */
   --hv-terracotta-100: #f6dfd4; /* terracotta tint */
@@ -30,6 +31,7 @@
   --hv-income: #22a45a; /* fresh green — paid, positive, income */
   --hv-income-100: #d3f1de;
   --hv-expense: #e23d2c; /* punchy red — overdue, negative, expense */
+  --hv-expense-700: #a82a1f; /* text-safe red — 5:1+ on white and on expense-100 */
   --hv-expense-100: #fdd8d3;
   --hv-warning: #f5b301; /* saturated honey — pending */
   --hv-warning-100: #feedbe;
