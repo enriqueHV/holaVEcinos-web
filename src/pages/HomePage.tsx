@@ -118,19 +118,16 @@ function FlowRow({ steps, tone }: { steps: string[]; tone: 'before' | 'after' })
 
 const pillars = [
   {
-    mark: '01',
     title: 'Cuentas Claras',
     kicker: 'Visibilidad total',
     text: 'Ve cada dólar que entra y sale con el porqué. Acceso directo a facturas, proveedores y comprobantes en un solo clic',
   },
   {
-    mark: '02',
     title: 'Organización Centralizada',
     kicker: 'Cero fricción',
     text: 'Todo el edificio en una sola pantalla. Adiós al ruido de los chats grupales y al cruce de versiones. Un canal ordenado para la gestión, los reportes y las votaciones',
   },
   {
-    mark: '03',
     title: 'Propiedad de la Comunidad',
     kicker: 'Tus datos, tus reglas',
     text: 'El software y los datos de tu edificio pertenecen a la comunidad, no a una plataforma externa o a un administrador pasajero. Control total sobre tu patrimonio',
@@ -474,10 +471,7 @@ export function HomePage() {
           </div>
           <div className={styles.pillarGrid}>
             {pillars.map((pillar) => (
-              <article key={pillar.mark} className={styles.pillar}>
-                <span className={styles.pillarNum} aria-hidden="true">
-                  {pillar.mark}
-                </span>
+              <article key={pillar.title} className={styles.pillar}>
                 <h3>{pillar.title}</h3>
                 <p className={styles.pillarKicker}>{pillar.kicker}</p>
                 <p>{pillar.text}</p>

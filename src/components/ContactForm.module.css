@@ -14,7 +14,7 @@
   border-left: 3px solid var(--hv-expense);
   border-radius: var(--radius-sm);
   background: var(--hv-expense-100);
-  color: var(--hv-expense);
+  color: var(--hv-expense-700);
   font-size: var(--fs-15);
   padding: var(--space-3) var(--space-4);
 }
@@ -62,19 +62,19 @@
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
-  outline: 2px solid var(--hv-orange);
+  outline: 2px solid var(--hv-orange-700);
   outline-offset: 1px;
 }
 
 .hint {
   margin: 0;
   font-size: var(--fs-13);
-  color: var(--hv-charcoal-300);
+  color: var(--hv-charcoal-500);
 }
 
 .errorText {
   margin: 0;
-  color: var(--hv-expense);
+  color: var(--hv-expense-700);
   font-size: var(--fs-15);
   font-weight: 600;
 }

@@ -46,7 +46,7 @@
 }
 
 .brandVe {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 .meta {
@@ -66,8 +66,8 @@
 }
 
 .meta a:hover {
-  color: var(--hv-orange);
-  border-bottom-color: var(--hv-orange);
+  color: var(--hv-orange-700);
+  border-bottom-color: var(--hv-orange-700);
   text-decoration: none;
 }
 

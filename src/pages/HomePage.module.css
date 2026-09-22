@@ -22,7 +22,7 @@
 }
 
 .brandVe {
-  color: var(--hv-orange);
+  color: var(--hv-orange-700);
 }
 
 /* Auth pair pinned to the far right of the bar */
@@ -790,14 +790,6 @@
 .pillar:hover {
   transform: translateY(-4px);
   border-color: color-mix(in srgb, var(--hv-orange) 45%, transparent);
-}
-
-.pillarNum {
-  font-family: var(--font-mono);
-  font-size: var(--fs-15);
-  font-weight: 600;
-  font-variant-numeric: var(--num-feat);
-  color: var(--hv-orange-700);
 }
 
 .pillar h3 {
