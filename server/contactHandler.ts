@@ -112,16 +112,11 @@ function buildProspectConfirmationText(submission: ContactSubmission): string {
   return [
     `Hola ${submission.name},`,
     '',
-    'Recibimos tu solicitud en holaVEcinos.',
-    'Nuestro equipo revisará tu mensaje y te responderá por correo en el menor tiempo posible.',
+    'Recibimos tu solicitud correctamente. Gracias por tu interés en HolaVecinos.',
     '',
-    'Resumen de tu solicitud:',
-    `- Condominio/organización: ${submission.organizationName}`,
-    `- Rol: ${roleLabelByValue[submission.role]}`,
-    `- Unidades: ${unitRangeLabelByValue[submission.unitRange]}`,
+    'Ya tenemos tu información y nos pondremos en contacto contigo pronto.',
     '',
-    'Gracias por escribirnos.',
-    'Equipo holaVEcinos',
+    'Equipo HolaVecinos',
   ].join('\n');
 }
 
@@ -180,14 +175,14 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
 
   const resendApiKey = process.env.RESEND_API_KEY;
   const resendFromEmail = process.env.RESEND_FROM_EMAIL;
-  const destinationEmail = process.env.CONTACT_TO_EMAIL || 'esucre@holavecinos.app';
+  const destinationEmail = process.env.CONTACT_TO_EMAIL || 'info@holavecinos.app';
 
   if (!resendApiKey || !resendFromEmail) {
     return {
       status: 500,
       payload: {
         ok: false,
-        message: 'El formulario no está configurado todavía. Escríbenos a esucre@holavecinos.app.',
+        message: 'El formulario no está configurado todavía. Escríbenos a info@holavecinos.app.',
       },
     };
   }
@@ -214,7 +209,7 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
   const confirmationMessage = await resend.emails.send({
     from: resendFromEmail,
     to: submission.email,
-    subject: 'Recibimos tu solicitud en holaVEcinos',
+    subject: 'Recibimos tu solicitud — HolaVecinos',
     text: buildProspectConfirmationText(submission),
   });
 

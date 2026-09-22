@@ -89,7 +89,6 @@ export function ContactForm() {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<ContactFormState>('idle');
-  const [responseMessage, setResponseMessage] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
   const [generalErrorMessage, setGeneralErrorMessage] = useState('');
   const successMessageRef = useRef<HTMLDivElement | null>(null);
@@ -175,12 +174,11 @@ export function ContactForm() {
       }
 
       setStatus('success');
-      setResponseMessage(payload.message);
       setWarningMessage(payload.warning ?? '');
     } catch {
       setStatus('error');
       setGeneralErrorMessage(
-        'Ocurrió un problema de conexión. Intenta nuevamente o escríbenos a esucre@holavecinos.app.',
+        'No pudimos enviar tu solicitud. Por favor, intenta nuevamente. Si el problema continúa, escríbenos a info@holavecinos.app.',
       );
     }
   }
@@ -194,8 +192,10 @@ export function ContactForm() {
         aria-live="polite"
         aria-atomic="true"
       >
-        <h3>Gracias por escribirnos</h3>
-        <p>{responseMessage}</p>
+        <h3>¡Solicitud enviada correctamente!</h3>
+        <p>
+          Gracias por contactarnos. Recibimos tu solicitud y nos pondremos en contacto contigo pronto.
+        </p>
         {warningMessage && <p className={styles.warningText}>{warningMessage}</p>}
       </div>
     );
@@ -349,7 +349,7 @@ export function ContactForm() {
         </div>
 
         <div className={`${styles.field} ${styles.full}`}>
-          <label htmlFor="message">Mensaje*</label>
+          <label htmlFor="message">Mensaje</label>
           <textarea
             ref={messageRef}
             id="message"
@@ -392,7 +392,7 @@ export function ContactForm() {
               aria-describedby={errors.consent ? 'consent-error' : undefined}
             />
             <span>
-              Autorizo el tratamiento de mis datos para que holaVEcinos me contacte sobre esta solicitud.*
+              Autorizo el tratamiento de mis datos para que HolaVecinos me contacte sobre esta solicitud.*
             </span>
           </label>
           {errors.consent && (

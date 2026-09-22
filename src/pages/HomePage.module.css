@@ -1,19 +1,37 @@
 .topbar {
-  position: absolute;
-  inset: 0 0 auto;
+  position: sticky;
+  top: 0;
   z-index: 20;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-5);
   padding: var(--space-4) clamp(1.25rem, 4vw, 3rem);
+  background: color-mix(in srgb, var(--hv-cream) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: var(--hv-rule);
 }
 
-.topbarActions {
+/* Wordmark: clean type, never an image — sharp at any size */
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--fs-24);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--hv-charcoal);
+  white-space: nowrap;
+}
+
+.brandVe {
+  color: var(--hv-orange);
+}
+
+/* Auth pair pinned to the far right of the bar */
+.authGroup {
+  /* no auto margin: .topbarNav owns the free space, so the menu is pushed right and
+     lands flush against the login button instead of leaving a void between them */
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .topbarNav {
@@ -21,31 +39,21 @@
   flex-wrap: wrap;
   gap: var(--space-4);
   justify-content: flex-end;
+  /* the single flexible track: pushes the whole menu to the right edge of the bar */
+  margin-left: auto;
+  /* breathing room so the last item never touches the login button */
+  margin-right: var(--space-6);
 }
 
 .topbarBrand {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
   text-decoration: none;
 }
 
-.topbarBrand img {
-  width: 34px;
-  height: auto;
-}
-
-.topbarBrand span {
-  font-family: var(--font-display);
-  font-size: var(--fs-17);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--hv-charcoal);
-}
-
-.topbarBrand .brandVe {
-  color: var(--hv-orange);
-  text-transform: uppercase;
+.topbarBrand:hover,
+.topbarBrand:hover .wordmark {
+  text-decoration: none;
 }
 
 .topbarNav a {
@@ -63,45 +71,51 @@
 }
 
 .topbarNav a:focus-visible,
-.topbarLogin:focus-visible,
-.topbarCta:focus-visible {
+.authLogin:focus-visible,
+.authPrimary:focus-visible {
   outline: 2px solid var(--hv-orange);
   outline-offset: 3px;
 }
 
-.topbarLogin {
+/* Secondary: discreet ghost */
+.authLogin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--hv-charcoal);
-  background: var(--hv-paper);
-  border: 1px solid var(--hv-border-strong);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
-  font-size: var(--fs-13);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: var(--fs-15);
+  font-weight: 600;
   text-decoration: none;
-  padding: 0.6rem 1rem;
+  padding: 0 var(--space-3);
+  transition: color 160ms ease, border-color 160ms ease;
 }
 
-.topbarLogin:hover {
-  border-color: var(--hv-orange);
+.authLogin:hover {
   color: var(--hv-orange);
+  border-color: var(--hv-border-strong);
   text-decoration: none;
 }
 
-.topbarCta {
+/* Primary: the highlighted action */
+.authPrimary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--text-on-accent);
   background: var(--hv-orange);
   border: 1px solid var(--hv-orange);
   border-radius: var(--radius-sm);
-  font-size: var(--fs-13);
+  font-size: var(--fs-15);
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   text-decoration: none;
-  padding: 0.6rem 1rem;
+  padding: 0 var(--space-4);
+  transition: background-color 160ms ease, border-color 160ms ease;
 }
 
-.topbarCta:hover {
+.authPrimary:hover {
   background: var(--hv-orange-600);
   border-color: var(--hv-orange-600);
   color: var(--text-on-accent);
@@ -110,61 +124,105 @@
 
 .hero {
   position: relative;
-  min-height: 78svh;
+  min-height: 84svh;
   display: grid;
+  grid-template-rows: 1fr;
   align-items: center;
   overflow: hidden;
   isolation: isolate;
-  background:
-    radial-gradient(
-      circle at 88% 6%,
-      color-mix(in srgb, var(--hv-orange) 8%, transparent),
-      transparent 44%
-    ),
-    var(--hv-cream);
+  background: linear-gradient(
+    to bottom,
+    #fff3e0 0%,
+    #ffe3bd 24%,
+    #ffd79f 48%,
+    #ffc081 70%,
+    #ffb26b 86%,
+    #ffa45a 100%
+  );
   color: var(--hv-charcoal);
   border-bottom: var(--hv-rule);
 }
 
+.heroSkyline {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  /* the svg keeps its own aspect, so the city is never cropped or banded */
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* On narrow screens the wide city would over-zoom: keep it as a base band. */
+@media (max-width: 760px) {
+  /* tighter stack, and a slightly raised city band */
+  .heroInner {
+    gap: clamp(0.85rem, 3.5vw, 1.5rem);
+    padding-top: clamp(1.5rem, 4vw, 2.25rem);
+    padding-bottom: clamp(2.5rem, 7vw, 3.75rem);
+  }
+  .heroTitle {
+    font-size: clamp(2.3rem, 11vw, 3rem);
+    line-height: 1.06;
+  }
+  /* .heroContent prefix raises specificity so this beats the base rule above,
+     which otherwise wins on source order alone */
+  .heroContent .heroSubtitle {
+    margin-top: var(--space-4);
+    width: auto;
+    max-width: none;
+    font-size: clamp(0.72rem, 3.5vw, 1rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+  }
+  .heroCtas { margin-top: var(--space-5); }
+}
+
 .heroContent {
-  width: min(100%, 980px);
-  padding: clamp(6rem, 12vw, 8rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2.75rem, 6vw, 4.5rem);
+  align-self: center;
+  /* Lifted a touch so the CTA lands in open sky, clear of the rooflines. Uses `top`,
+     not transform: the `rise` entrance animation owns this element's transform (and
+     with fill-mode both it keeps it applied), so a transform here would be overridden. */
+  position: relative;
+  top: -1.25rem;
+  width: min(100%, 940px);
+  padding: clamp(3.5rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 5vh, 3.5rem);
   animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.heroMark {
-  width: clamp(104px, 13vw, 148px);
-  height: auto;
-  margin: 0 0 var(--space-5);
-}
-
-.localeTag {
+.heroEpigraph {
   margin: 0 0 var(--space-4);
   font-size: var(--fs-13);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--hv-orange);
+  color: var(--hv-terracotta);
 }
 
-.brandLockup {
+.heroTitle {
   margin: 0;
-}
-
-.brandLockup img {
-  width: min(100%, 620px);
-  height: auto;
-}
-
-.heroLine {
-  margin: var(--space-6) 0 0;
-  max-width: 24ch;
   font-family: var(--font-display);
-  font-size: var(--fs-30);
-  line-height: 1.15;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--hv-charcoal-500);
+  font-size: clamp(2.5rem, 5.6vw, 58px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--hv-charcoal);
+}
+
+.heroSubtitle {
+  margin: var(--space-5) 0 0;
+  max-width: none;
+  font-family: var(--font-ui);
+  font-size: clamp(1.2rem, 1.6vw, 1.48rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  width: max-content;
+  color: color-mix(in srgb, var(--hv-charcoal-500) 26%, var(--hv-charcoal));
 }
 
 .heroCtas {
@@ -243,9 +301,9 @@
 }
 
 .marqueeTrack span::after {
-  content: '·';
+  content: '•';
   margin-left: 2.5rem;
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 .problem {
@@ -313,29 +371,462 @@
   max-width: 36ch;
 }
 
-.folios {
-  background: var(--hv-cream);
-  color: var(--hv-charcoal);
-  border-top: var(--hv-rule);
-  padding: clamp(3.5rem, 8vw, 5.5rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+/* ——— Cambio de dinámica: Antes vs Ahora ——— */
+.cambio {
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
+  background: var(--hv-paper);
+  border-bottom: var(--hv-rule);
 }
 
-.foliosHead {
-  padding: 0 clamp(1.25rem, 4vw, 3.5rem) var(--space-6);
-}
-
-.foliosHead h2 {
-  margin: 0;
+.cambio h2 {
+  margin: 0 0 var(--space-7);
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
   letter-spacing: -0.035em;
-  color: var(--hv-charcoal);
+  max-width: 14ch;
 }
 
-.foliosHead p {
-  margin: var(--space-3) 0 0;
+/* ——— Cambio de dinámica ——— */
+.cambioHead {
+  max-width: 62ch;
+}
+
+.cambioLede {
+  margin: var(--space-4) 0 var(--space-7);
+  max-width: 54ch;
+  font-size: var(--fs-17);
+  line-height: 1.65;
   color: var(--hv-charcoal-500);
 }
+
+.diptych {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  align-items: stretch;
+}
+
+.diptychArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 999px;
+  background: var(--hv-paper);
+  border: var(--hv-rule);
+  color: var(--hv-orange);
+  /* line-height: 0 removes the text baseline offset that pushed the old glyph
+     off optical centre; the stroked SVG below is centred geometrically. */
+  line-height: 0;
+  box-shadow: 0 14px 30px -18px rgba(42, 46, 56, 0.55);
+}
+
+/* The arrow itself: one thick stroke, symmetric inside the 24-unit box, so it
+   scales as a unit and stays dead centre in the circle on every viewport. */
+.diptychArrow svg {
+  display: block;
+  width: 58px;
+  height: 58px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-radius: 20px;
+  border: var(--hv-rule);
+}
+
+.panelBefore {
+  background: var(--hv-cream);
+}
+
+.panelAfter {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--hv-orange) 9%, var(--hv-paper)) 0%,
+    var(--hv-paper) 62%
+  );
+  border-color: color-mix(in srgb, var(--hv-orange) 35%, transparent);
+  box-shadow:
+    0 1px 2px rgba(42, 46, 56, 0.05),
+    0 22px 44px -30px rgba(242, 122, 26, 0.55);
+}
+
+.panelHead {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.panelLabel,
+.panelLabelNow {
+  margin: 0;
+  font-size: var(--fs-11);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.panelLabel {
+  color: var(--hv-charcoal-300);
+}
+
+.panelLabelNow {
+  color: var(--hv-orange);
+}
+
+.panelTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-23, 1.4375rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--hv-charcoal);
+}
+
+.panelArt {
+  display: block;
+}
+
+.panelArt svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* — Friction illustration — */
+.chaosSvg {
+  max-height: 240px;
+}
+
+.tangle {
+  fill: none;
+  stroke: rgba(42, 46, 56, 0.26);
+  stroke-width: 1.6;
+  stroke-dasharray: 7 6;
+}
+
+.bubble,
+.sheet,
+.ledger,
+.clock {
+  fill: #efe9de;
+  stroke: rgba(42, 46, 56, 0.18);
+  stroke-width: 1.4;
+}
+
+.bubbleLine,
+.sheetLine {
+  fill: rgba(42, 46, 56, 0.2);
+}
+
+.ledgerHead {
+  fill: rgba(42, 46, 56, 0.1);
+}
+
+.gridLine {
+  stroke: rgba(42, 46, 56, 0.14);
+  stroke-width: 1;
+}
+
+.clock {
+  stroke: rgba(42, 46, 56, 0.3);
+}
+
+.clock line {
+  stroke: rgba(42, 46, 56, 0.5);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.clockDot {
+  fill: rgba(42, 46, 56, 0.55);
+  stroke: none;
+}
+
+/* — Order illustration — */
+.orderSvg {
+  max-height: 200px;
+}
+
+.orderCard {
+  fill: #fff8ee;
+  stroke: color-mix(in srgb, var(--hv-orange) 26%, transparent);
+  stroke-width: 1.4;
+}
+
+.orderDot {
+  fill: var(--hv-orange);
+}
+
+.orderBar {
+  fill: var(--hv-orange);
+}
+
+.orderWindow {
+  fill: #ffb23d;
+}
+
+.check circle {
+  fill: var(--hv-orange);
+}
+
+.check path {
+  fill: none;
+  stroke: #fff8ee;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* — Panel lists — */
+.painList,
+.gainList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.painList li,
+.gainList li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: var(--fs-15);
+  line-height: 1.55;
+}
+
+.painList li {
+  color: var(--hv-charcoal-500);
+}
+
+.gainList li {
+  color: var(--hv-charcoal);
+}
+
+.painList li::before,
+.gainList li::before {
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-13);
+  font-weight: 700;
+}
+
+.painList li::before {
+  content: '–';
+  color: var(--hv-charcoal-300);
+}
+
+.gainList li::before {
+  content: '✓';
+  color: var(--hv-orange);
+}
+
+.panelOutcome {
+  display: flex;
+  gap: 0.55rem;
+  margin: auto 0 0;
+  padding-top: var(--space-3);
+  border-top: var(--hv-rule);
+  font-size: var(--fs-14);
+  line-height: 1.5;
+  color: var(--hv-charcoal-500);
+}
+
+.outcomeIcon {
+  flex: none;
+  color: var(--hv-charcoal-300);
+  font-weight: 700;
+}
+
+/* — Pipeline: the fix, in three beats — */
+/* — Process flow: three pills in ONE row, arrows between — */
+.flowRow {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.3rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flowPill {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.5rem 0.45rem;
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: clamp(0.66rem, 0.95vw, var(--fs-14));
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.flowArrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  font-family: var(--font-ui);
+  font-size: var(--fs-14);
+  font-weight: 700;
+}
+
+/* ANTES — grey, muted, same geometry */
+.flowBefore .flowPill {
+  background: var(--hv-paper);
+  border: 1px solid rgba(42, 46, 56, 0.16);
+  color: var(--hv-charcoal-500);
+}
+
+.flowBefore .flowArrow {
+  color: var(--hv-charcoal-300);
+}
+
+/* DESPUÉS — warm, accented, same geometry */
+.flowAfter .flowPill {
+  background: var(--hv-paper);
+  border: 1px solid color-mix(in srgb, var(--hv-orange) 32%, transparent);
+  color: var(--hv-charcoal);
+}
+
+.flowAfter .flowArrow {
+  color: var(--hv-orange);
+}
+
+
+.outcomeRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+  margin: auto 0 0;
+  padding-top: var(--space-3);
+  border-top: var(--hv-rule);
+}
+
+.outcomeChip {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--hv-orange) 10%, var(--hv-paper));
+  border: 1px solid color-mix(in srgb, var(--hv-orange) 26%, transparent);
+  font-size: var(--fs-13);
+  line-height: 1.4;
+  color: var(--hv-charcoal-500);
+}
+
+.outcomeChip strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-15);
+  color: var(--hv-charcoal);
+}
+
+@media (max-width: 900px) {
+  .diptych {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .diptychArrow {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diptychArrow {
+    transition: none;
+  }
+}
+
+/* ——— Los tres pilares ——— */
+.pillars {
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
+  background: var(--hv-cream);
+  border-bottom: var(--hv-rule);
+}
+
+.pillarsHead {
+  margin-bottom: var(--space-7);
+}
+
+.pillarsHead h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+
+.pillarGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.pillar {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-5);
+  background: var(--hv-paper);
+  border: var(--hv-rule);
+  border-radius: var(--radius-md);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.pillar:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--hv-orange) 45%, transparent);
+}
+
+.pillarNum {
+  font-family: var(--font-mono);
+  font-size: var(--fs-15);
+  font-weight: 600;
+  font-variant-numeric: var(--num-feat);
+  color: var(--hv-orange);
+}
+
+.pillar h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-24);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--hv-charcoal);
+}
+
+.pillarKicker {
+  margin: 0;
+  font-size: var(--fs-13);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hv-terracotta);
+}
+
+.pillar p:last-child {
+  margin: 0;
+  color: var(--hv-charcoal-500);
+  font-size: var(--fs-15);
+}
+
+
+
+
 
 .folioRail {
   display: grid;
@@ -404,9 +895,9 @@
 
 .ruta {
   padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
-  background:
-    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--hv-orange) 8%, transparent), transparent 42%),
-    var(--hv-cream);
+  /* rhythm: #cambio white · #pilares beige · #ruta white · #faq beige.
+     The old cream + orange radial wash broke the alternation, so it goes. */
+  background: var(--hv-paper);
 }
 
 .ruta h2 {
@@ -475,34 +966,12 @@
   font-size: var(--fs-15);
 }
 
-.about {
-  padding: clamp(3rem, 7vw, 4.5rem) clamp(1.25rem, 4vw, 3.5rem);
-  background: var(--hv-orange-100);
-  color: var(--hv-charcoal);
-  border-top: var(--hv-rule);
-}
 
-.about h2 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.2vw, 2.6rem);
-  color: var(--hv-charcoal);
-}
 
-.aboutTodo {
-  margin: var(--space-5) 0 0;
-  max-width: 48ch;
-  padding: var(--space-4);
-  border: var(--hv-rule);
-  border-left: 3px solid var(--hv-orange);
-  border-radius: var(--radius-sm);
-  background: var(--hv-paper);
-  color: var(--hv-charcoal-500);
-}
 
 .faq {
   padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
-  background: var(--hv-paper);
+  background: var(--hv-cream);
   border-top: var(--hv-rule);
 }
 
@@ -653,6 +1122,19 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .pillarGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .flow {
+    grid-template-columns: 1fr;
+  }
+
+  .flowDivider {
+    width: 100%;
+    height: 1px;
+  }
+
   .contactPane {
     justify-content: start;
   }
@@ -664,20 +1146,20 @@
 
 @media (max-width: 768px) {
   .topbar {
-    position: relative;
     flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   .topbarNav {
     display: none;
   }
 
-  .heroContent {
-    padding-top: 5.5rem;
+  .wordmark {
+    font-size: var(--fs-20);
   }
 
-  .brandLockup img {
-    width: 100%;
+  .heroContent {
+    padding-top: 3rem;
   }
 
   .stampRow {
@@ -700,7 +1182,306 @@
   }
 
   .ctaPrimary:hover,
-  .folio:hover {
+  .folio:hover,
+  .pillar:hover {
     transform: none;
+  }
+}
+
+/* ============================================================
+   Editorial accents — brand orange on display type
+   ============================================================ */
+.heroTitleAccent,
+.headAccent {
+  color: var(--hv-orange-600, var(--hv-orange));
+}
+
+/* ============================================================
+   Pillar cards — depth without losing the friendly tone
+   (appended, so the base .pillar rule stays intact)
+   ============================================================ */
+.pillar {
+  position: relative;
+  border-radius: 18px;
+  box-shadow:
+    0 1px 2px rgba(42, 46, 56, 0.05),
+    0 14px 30px -20px rgba(42, 46, 56, 0.38);
+  transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 360ms ease,
+    border-color 260ms ease;
+}
+
+/* Warm plaza light flooding in from the card's foot on hover */
+.pillar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(70% 60% at 50% 118%, rgba(242, 122, 26, 0.16), transparent 72%);
+  opacity: 0;
+  transition: opacity 360ms ease;
+  pointer-events: none;
+}
+
+.pillar:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 3px 6px rgba(42, 46, 56, 0.06),
+    0 30px 50px -26px rgba(42, 46, 56, 0.45);
+}
+
+.pillar:hover::after,
+.pillar:focus-within::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillar,
+  .pillar::after { transition: none; }
+  .pillar:hover { transform: none; }
+}
+
+/* ============================================================
+   Así de fácil es comenzar — four light steps
+   ============================================================ */
+.rutaHead {
+  max-width: 60ch;
+}
+
+.rutaLede {
+  margin: var(--space-4) 0 var(--space-7);
+  max-width: 52ch;
+  font-size: var(--fs-17);
+  line-height: 1.65;
+  color: var(--hv-charcoal-500);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+  counter-reset: paso;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  border-radius: 20px;
+  background: var(--hv-paper);
+  border: var(--hv-rule);
+  box-shadow:
+    0 1px 2px rgba(42, 46, 56, 0.05),
+    0 14px 30px -22px rgba(42, 46, 56, 0.35);
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms ease;
+}
+
+.step:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 3px 6px rgba(42, 46, 56, 0.06),
+    0 26px 44px -26px rgba(42, 46, 56, 0.42);
+}
+
+.stepIcon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--hv-orange) 12%, var(--hv-paper));
+  border: 1px solid color-mix(in srgb, var(--hv-orange) 26%, transparent);
+  color: var(--hv-orange);
+}
+
+.stepIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stepNum {
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--hv-charcoal-300);
+}
+
+.stepTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-19, 1.1875rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--hv-charcoal);
+}
+
+.stepText {
+  margin: 0;
+  font-size: var(--fs-15);
+  line-height: 1.55;
+  color: var(--hv-charcoal-500);
+}
+
+.rutaCta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.rutaNote {
+  font-size: var(--fs-14);
+  color: var(--hv-charcoal-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    transition: none;
+  }
+
+  .step:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Hero two-column: copy on the left, product surface on the right
+   ============================================================ */
+.heroInner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(2rem, 5vw, 3.25rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3.5rem, 7vw, 5.5rem);
+}
+
+/* Narrows the product surface's column to ~88% and right-aligns it inside that
+   column, so the card renders smaller and reads slightly higher and further to
+   the right while the headline leads. The card's own 3D tilt, shadow and hover
+   lift are untouched: nothing here re-transforms it — the grid box is just smaller. */
+.heroVisual {
+  width: 88%;
+  margin-inline-start: auto;
+  transform: translateY(-3%);
+}
+
+
+@media (max-width: 940px) {
+  .heroInner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+    padding-bottom: var(--space-5);
+  }
+
+  /* stacked layout: the surface keeps its original size and framing */
+  .heroVisual {
+    width: 100%;
+    margin-inline-start: 0;
+    transform: none;
+  }
+
+  }
+
+@media (prefers-reduced-motion: reduce) {
+  }
+
+/* ============================================================
+   Refinement pass — compact ANTES Y DESPUÉS + connected 4-step journey
+   ============================================================ */
+
+/* The three title lines must survive as three lines, so the inherited 14ch
+   cap is lifted; the gap under the title is what pushes the cards down, so
+   that is the one number reduced — card internals are untouched. */
+.cambioHead h2 {
+  max-width: none;
+  line-height: 1.08;
+  margin-bottom: clamp(0.9rem, 1.8vw, 1.4rem);
+}
+
+/* Slightly shorter tail so the section closes up vertically. */
+.cambio {
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* ——— Step icons: one system — charcoal line work, one orange action element ——— */
+.iconLine { stroke: var(--hv-charcoal); }
+.iconAccent { stroke: var(--hv-orange); }
+
+/* ——— Connectors: a chevron in the gap, pointing 01 → 04. Heavier weight and
+   full brand orange so the progression reads at a glance. Still centred in the
+   existing grid gap, so no layout value changes. ——— */
+.step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc((clamp(0.9rem, 2vw, 1.4rem) / 2 + 9px) * -1);
+  width: 17px;
+  height: 17px;
+  border-top: 2.5px solid var(--hv-orange);
+  border-right: 2.5px solid var(--hv-orange);
+  border-radius: 2px;
+  transform: translateY(-50%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* the last card has nothing to point at */
+.step:last-child::after { display: none; }
+
+/* Below the four-across breakpoint the cards stack, so a sideways chevron
+   would point at nothing: it is removed rather than left dangling. */
+@media (max-width: 1100px) {
+  .step::after { display: none; }
+}
+
+/* ============================================================
+   MOBILE ONLY — breathing room for the ANTES / DESPUÉS beats
+   Scoped to the phone breakpoint; desktop and tablet keep the
+   three-across row untouched. The beats stack so each one owns
+   the full panel width instead of being crushed into ~86px,
+   which is what forced "El propietario / pregunta" onto three
+   awkward lines.
+   ============================================================ */
+@media (max-width: 768px) {
+  .flowRow {
+    /* stacked, not squeezed side by side */
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .flowPill {
+    /* full width and free to size itself: no fixed track, no forced breaks */
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0.7rem 0.9rem;
+    line-height: 1.35;
+  }
+
+  .flowArrow {
+    /* the connector turns to point down, matching the stacked flow */
+    flex: none;
+    width: auto;
+    margin: 0.15rem auto;
+    transform: rotate(90deg);
+    line-height: 1;
+  }
+
+  .panel {
+    /* a touch more internal padding so the text sits comfortably */
+    padding: clamp(1.35rem, 5.5vw, 1.9rem);
   }
 }

@@ -1,0 +1,103 @@
+
+.skyline {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* --sk is published 0..1 by the component on scroll */
+}
+
+/* ——— Parallax is HORIZONTAL ONLY. Depth still shifts with scroll (far least, the near
+   towers most) but no plane ever translates vertically, so every silhouette stays welded
+   to the ground line and the city can never lift off the street. ——— */
+.layerFar {
+  transform: translateX(calc((var(--sk, 0.5) - 0.5) * -3px));
+}
+
+.layerMid {
+  transform: translateX(calc((var(--sk, 0.5) - 0.5) * -6px));
+}
+
+.layerNear {
+  transform: translateX(calc((var(--sk, 0.5) - 0.5) * -10px));
+}
+
+/* ——— El Ávila: opaque, coloured near the sky so it reads as distance ——— */
+.avilaFar {
+  fill: #d9c3ab;
+}
+
+.avilaNear {
+  fill: #cbab90;
+}
+
+/* ——— Structure: opaque fills only. No translucent shapes anywhere. ——— */
+.furniture { fill: #3d3733; }
+.furnitureGroup { opacity: 1; }
+.dishCore { fill: #4a423d; }
+.panel { fill: #4a423d; opacity: 0.55; }
+.ground { fill: #2f2b28; }
+
+/* ——— Windows: lit warm by default, never reactive to hover ——— */
+.window {
+  fill: #ffc257;
+  opacity: 0.9;
+}
+
+/* A few windows drift between warm white, yellow and brand orange. */
+.windowTone {
+  animation: hv-tone var(--dur, 22s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* A few windows quietly turn on and off. */
+.windowFlicker {
+  animation: hv-flicker var(--dur, 22s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes hv-tone {
+  0%, 58% { fill: #ffc257; }
+  68% { fill: #fff3d6; }
+  78% { fill: #f27a1a; }
+  88% { fill: #ffd98a; }
+  100% { fill: #ffc257; }
+}
+
+/* ——— The opening wave: one pass of light, left → right. Windows sit dark until the
+   crest reaches them, flare to full, dip once, then settle at their normal value. The
+   per-window delay comes from --wdel (a function of x), so the front genuinely travels
+   and neighbours never switch in unison. Fully non-interactive and it runs once. ——— */
+.waving .windowWave {
+  animation: hv-wave 1500ms cubic-bezier(0.33, 0, 0.2, 1) both;
+  animation-delay: var(--wdel, 0ms);
+}
+
+@keyframes hv-wave {
+  0% { opacity: 0.07; }
+  34% { opacity: 0.55; }
+  52% { opacity: 1; }
+  68% { opacity: 0.45; }
+  100% { opacity: 0.9; }
+}
+
+@keyframes hv-flicker {
+  0%, 46% { opacity: 0.9; }
+  60% { opacity: 0.34; }
+  74% { opacity: 0.86; }
+  88% { opacity: 0.42; }
+  100% { opacity: 0.9; }
+}
+
+/* ——— Street level ——— */
+.lamp { fill: #4a423d; }
+.lampGlow { fill: #ffc257; opacity: 0.8; }
+
+/* No hover interaction anywhere: the city is ambience, not a toy. */
+@media (prefers-reduced-motion: reduce) {
+  .layerFar,
+  .layerMid,
+  .layerNear { transform: none; }
+  .windowTone,
+  .windowFlicker { animation: none; }
+  .waving .windowWave { animation: none; }
+}

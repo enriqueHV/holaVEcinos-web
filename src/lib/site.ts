@@ -42,6 +42,19 @@ export function getAppLoginUrl(): string {
   return `${getAppUrl()}/login`;
 }
 
+/** Register / sign-up target. Override with VITE_APP_REGISTER_URL if the app uses another path. */
+export function getAppRegisterUrl(): string {
+  const envValue = import.meta.env.VITE_APP_REGISTER_URL;
+  if (typeof envValue === 'string' && envValue.trim().length > 0) {
+    try {
+      return new URL(envValue.trim()).toString();
+    } catch {
+      // fall through to composed default
+    }
+  }
+  return `${getAppUrl()}/register`;
+}
+
 export function canonicalForPath(pathname: string): string {
   const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
   return `${getSiteUrl()}${normalizedPath === '/' ? '' : normalizedPath}`;

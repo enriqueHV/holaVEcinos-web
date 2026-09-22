@@ -40,16 +40,31 @@ export default defineConfig({
             return;
           }
 
-          const body = await readJsonBody(request);
-          const result = await handleContactRequest({
-            method: request.method ?? 'POST',
-            body,
-            ipAddress: request.socket.remoteAddress ?? 'ip-no-disponible',
-          });
-
-          response.statusCode = result.status;
           response.setHeader('Content-Type', 'application/json; charset=utf-8');
-          response.end(JSON.stringify(result.payload));
+
+          // An uncaught throw here would hang the request and the browser would
+          // report a connection failure instead of a usable error state.
+          try {
+            const body = await readJsonBody(request);
+            const result = await handleContactRequest({
+              method: request.method ?? 'POST',
+              body,
+              ipAddress: request.socket.remoteAddress ?? 'ip-no-disponible',
+            });
+
+            response.statusCode = result.status;
+            response.end(JSON.stringify(result.payload));
+          } catch (error) {
+            console.error('[contact] unhandled error', error);
+            response.statusCode = 500;
+            response.end(
+              JSON.stringify({
+                ok: false,
+                message:
+                  'No pudimos enviar tu solicitud en este momento. Intenta nuevamente en unos minutos.',
+              }),
+            );
+          }
         });
       },
     },
