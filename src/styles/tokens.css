@@ -10,6 +10,7 @@
  */
 :root {
   /* ——— Brand ——— */
+  --hv-brand-ve: #f27a1a; /* wordmark "VE" — pinned, cannot fall back to terracotta */
   --hv-orange: #f27a1a; /* primary — CTAs, active nav, the "VE" in wordmark */
   --hv-orange-600: #d96712; /* hover */
   --hv-orange-100: #fdecd9; /* tint — chips, subtle fills */

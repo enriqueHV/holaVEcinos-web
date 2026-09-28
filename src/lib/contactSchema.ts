@@ -53,11 +53,14 @@ export const contactSubmissionSchema = z.object({
   unitRange: z.enum(UNIT_RANGE_VALUES, {
     errorMap: () => ({ message: 'Selecciona el rango de unidades.' }),
   }),
+  /* Optional by design: a visitor can send the request with no message at all.
+     Only the length ceiling is enforced. */
   message: z
     .string()
     .trim()
-    .min(20, 'Cuéntanos un poco más para poder ayudarte.')
-    .max(1500, 'El mensaje no puede exceder 1500 caracteres.'),
+    .max(1500, 'El mensaje no puede exceder 1500 caracteres.')
+    .optional()
+    .default(''),
   consent: z.literal(true, {
     errorMap: () => ({ message: 'Debes autorizar el tratamiento de datos para continuar.' }),
   }),

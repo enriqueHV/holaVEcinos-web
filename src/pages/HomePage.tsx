@@ -1,51 +1,148 @@
+import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ContactForm } from '../components/ContactForm';
 import { SiteFooter } from '../components/SiteFooter';
+import { BUSINESS_EMAIL, BUSINESS_NAME, BUSINESS_PHONE } from '../lib/contact';
+import { HeroDashboard } from '../components/HeroDashboard';
+import { Skyline } from '../components/Skyline';
 import { canonicalForPath, getAppLoginUrl, getSiteUrl } from '../lib/site';
 import styles from './HomePage.module.css';
-import logoMark from '../assets/brand/logo-mark.png';
-import logoWordmark from '../assets/brand/logo-wordmark.png';
 
-const folios = [
+const pasos = [
   {
-    apt: 'A-12',
-    title: 'Cada bolívar deja rastro',
-    text: 'Movimientos con aprobación, comprobante y auditoría. La junta ve el flujo; el propietario ve a dónde fue su cuota.',
+    mark: '01',
+    title: 'REGÍSTRATE',
+    text: 'Registra tu condominio con nosotros',
   },
   {
-    apt: 'B-03',
-    title: 'Cobrar sin perseguir',
-    text: 'Cuotas por unidad, historial, proyección y recordatorios. La morosidad deja de vivir en una hoja aparte.',
+    mark: '02',
+    title: 'ORGANIZA',
+    text: 'El administrador carga la información del edificio, como saldos y alícuotas',
   },
   {
-    apt: 'C-07',
-    title: 'Proveedores a la vista',
-    text: 'Cotizaciones comparables, facturas con PDF y pasivos ligados al movimiento que los liquida.',
-  },
-  {
-    apt: 'PH',
-    title: 'Decisiones con quórum',
-    text: 'Votaciones con un voto por unidad, documentos publicados y calendario con vencimientos reales.',
+    mark: '03',
+    title: 'INVITA',
+    text: 'La junta invita a los propietarios del condominio a través de correo electrónico',
   },
 ];
 
-const stamps = [
-  { mark: '01', title: 'Registro', text: 'Correo verificado o Google / Apple. Luego el código del edificio.' },
-  { mark: '02', title: 'Aprobación', text: 'La junta activa la cuenta. Sin eso, no hay acceso operativo.' },
-  { mark: '03', title: 'Libro vivo', text: 'Movimientos, cuotas, pasivos, facturas y documentos por rol.' },
-  { mark: '04', title: 'Día a día', text: 'Notificaciones, calendario, votos y recordatorios en el mismo sitio.' },
+/**
+ * The four steps as ONE HolaVEcinos icon family — not four unrelated marks.
+ * Shared rules: a 44-unit grid, one 2px stroke with round caps and joins, simple
+ * geometric primitives, charcoal line work with a single restrained orange accent
+ * per icon. Each accent carries the ACTION of its step (the lit windows, the
+ * seal's check, the upload arrow, the finish flag), so the four read as
+ * four beats of the same journey.
+ */
+function StepIcon({ mark }: { mark: string }) {
+  const common = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.9,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+  };
+  switch (mark) {
+    /* 01 Regístrate — user-plus */
+    case '01':
+      return (
+        <svg {...common} aria-hidden="true">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M19 8v6M22 11h-6" />
+        </svg>
+      );
+    /* 02 Organiza — list-checks */
+    case '02':
+      return (
+        <svg {...common} aria-hidden="true">
+          <path d="m3 17 2 2 4-4" />
+          <path d="m3 7 2 2 4-4" />
+          <path d="M13 6h8M13 12h8M13 18h8" />
+        </svg>
+      );
+    /* 03 Invita — mail-plus */
+    case '03':
+      return (
+        <svg {...common} aria-hidden="true">
+          <path d="M22 13V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          <path d="M19 16v6M16 19h6" />
+        </svg>
+      );
+    /* the end of the journey — a finish flag */
+    default:
+      return (
+        <svg {...common} aria-hidden="true">
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+          <path d="M4 22v-7" />
+        </svg>
+      );
+  }
+}
+
+const ticker = [
+  'TRANSPARENCIA REAL',
+  'VISIBILIDAD 24/7',
+  'DATOS ORDENADOS',
+  'GESTIONES RÁPIDAS',
+  'FÁCIL Y ÁGIL',
+];
+
+const flujoAntes = ['La junta sabe', 'El propietario pregunta', 'La junta explica'];
+
+const flujoDespues = ['La junta registra', 'HolaVEcinos muestra', 'El propietario entiende'];
+
+/** One shared renderer for both sides, so ANTES and DESPUÉS stay perfectly parallel. */
+function FlowRow({ steps, tone }: { steps: string[]; tone: 'before' | 'after' }) {
+  return (
+    <ol className={`${styles.flowRow} ${tone === 'before' ? styles.flowBefore : styles.flowAfter}`}>
+      {steps.map((step, i) => (
+        <Fragment key={step}>
+          <li className={styles.flowPill}>{step}</li>
+          {i < steps.length - 1 && (
+            <li className={styles.flowArrow} aria-hidden="true">
+              →
+            </li>
+          )}
+        </Fragment>
+      ))}
+    </ol>
+  );
+}
+
+const pillars = [
+  {
+    mark: '01',
+    title: 'Cuentas Claras',
+    kicker: 'Visibilidad total',
+    text: 'Ve cada dólar que entra y sale con el porqué. Acceso directo a facturas, proveedores y comprobantes en un solo clic',
+  },
+  {
+    mark: '02',
+    title: 'Organización Centralizada',
+    kicker: 'Cero fricción',
+    text: 'Todo el edificio en una sola pantalla. Adiós al ruido de los chats grupales y al cruce de versiones. Un canal ordenado para la gestión, los reportes y las votaciones',
+  },
+  {
+    mark: '03',
+    title: 'Propiedad de la Comunidad',
+    kicker: 'Tus datos, tus reglas',
+    text: 'El software y los datos de tu edificio pertenecen a la comunidad, no a una plataforma externa o a un administrador pasajero. Control total sobre tu patrimonio',
+  },
 ];
 
 const faqs = [
   {
-    question: '¿Qué pasa después de que envío el formulario?',
+    question: '¿Cuáles son las ventajas?',
     answer:
-      'Revisamos tu mensaje y te contactamos por correo para entender tu caso y coordinar una demostración enfocada en tu condominio.',
+      'HolaVEcinos es un software moderno hecho para los propietarios. Nos dimos cuenta de que las plataformas que ya existen no están resolviendo bien dos cosas fundamentales para ellos: la transparencia y la comunicación. HolaVEcinos pone esa información en un solo lugar para que los propietarios tengan mayor visibilidad de lo que ocurre en su comunidad.',
   },
   {
     question: '¿Cómo manejan mis datos?',
     answer:
-      'Usamos tus datos solo para responder esta solicitud comercial. No publicamos ni vendemos información personal.',
+      'Los datos de tu edificio son privados y están protegidos. No vendemos ni publicamos tu información. Además, cada usuario tiene acceso únicamente a la información que le corresponde según su rol y permisos.',
   },
   {
     question: '¿Está pensado para la operación en Venezuela?',
@@ -53,188 +150,467 @@ const faqs = [
       'Sí. La plataforma contempla prácticas locales como seguimiento en USD con equivalencia referencial en bolívares según tasa BCV.',
   },
   {
-    question: '¿Sirve para junta, administradora y propietarios?',
+    question: '¿HolaVEcinos es una administradora?',
     answer:
-      'Sí. El sistema trabaja por roles y permisos para que cada perfil vea y ejecute lo que le corresponde.',
+      'No. No somos una administradora: somos el software que las administradoras, las juntas y los propietarios usan para llevar las cuentas y la operación del condominio. Tu administración sigue siendo la tuya; nosotros le damos la plataforma donde todo queda visible y ordenado.',
   },
   {
-    question: '¿Podemos empezar con un solo edificio?',
+    question: '¿Los propietarios pueden modificar las cuentas?',
     answer:
-      'Sí. Se puede iniciar con un edificio y escalar luego a más unidades o más estructuras dentro de la misma operación.',
+      'No. Cada usuario tiene un rol distinto dentro de HolaVEcinos. Propietarios, administradores y junta cuentan con permisos diferentes, para que cada uno pueda consultar o gestionar únicamente la información que le corresponde.',
+  },
+  {
+    question: '¿Cómo puedo llevar HolaVEcinos a mi edificio?',
+    answer:
+      'Regístrate para una demo y conversamos con la junta o administración de tu edificio. Revisamos cómo trabajan actualmente, resolvemos sus dudas y los acompañamos durante la puesta en marcha.',
   },
   {
     question: '¿Necesito cambiar todo mi proceso desde el primer día?',
     answer:
-      'No. Se puede adoptar por etapas, priorizando primero transparencia de movimientos y control de cuotas.',
+      'No. Puedes comenzar poco a poco e incorporar HolaVEcinos a tu proceso actual progresivamente, sin tener que cambiar todo desde el primer día.',
   },
 ];
+
+const HERO_TITLE_LINES = ['Visibilidad total', 'de lo que importa'];
 
 export function HomePage() {
   const siteUrl = getSiteUrl();
   const loginUrl = getAppLoginUrl();
-  const organizationJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'HolaVEcinos',
-    url: siteUrl,
-    email: 'esucre@holavecinos.app',
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        email: 'esucre@holavecinos.app',
-        contactType: 'sales',
-        areaServed: 'VE',
-        availableLanguage: ['es'],
+  const businessJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: BUSINESS_NAME,
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/brand/favicon-512.png`,
+        width: 512,
+        height: 512,
       },
-    ],
-  };
+      email: BUSINESS_EMAIL,
+      telephone: BUSINESS_PHONE,
+      description:
+        'HolaVEcinos es un software de gestión para condominios: ordena cuotas, pagos, gastos, saldos y la información financiera de la comunidad en un solo lugar.',
+      areaServed: { '@type': 'Country', name: 'Venezuela' },
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          contactType: 'customer support',
+          email: BUSINESS_EMAIL,
+          telephone: BUSINESS_PHONE,
+          availableLanguage: ['es'],
+        },
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: BUSINESS_NAME,
+      inLanguage: 'es-VE',
+      publisher: { '@id': `${siteUrl}/#organization` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${siteUrl}/#webpage`,
+      url: siteUrl,
+      name: 'HolaVEcinos | Software para gestionar condominios',
+      inLanguage: 'es-VE',
+      isPartOf: { '@id': `${siteUrl}/#website` },
+      about: { '@id': `${siteUrl}/#software` },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${siteUrl}/#software`,
+      name: BUSINESS_NAME,
+      applicationCategory: 'BusinessApplication',
+      applicationSubCategory: 'Condominium management software',
+      operatingSystem: 'Web',
+      url: siteUrl,
+      inLanguage: 'es-VE',
+      areaServed: { '@type': 'Country', name: 'Venezuela' },
+      publisher: { '@id': `${siteUrl}/#organization` },
+      description:
+        'Software de gestión para condominios. Ayuda a propietarios, administradores y juntas de condominio a tener claridad sobre cuotas, pagos, gastos, saldos y la información financiera de su comunidad, con la operación del día a día en un solo lugar.',
+      featureList: [
+        'Seguimiento de cuotas, pagos y gastos',
+        'Visibilidad de saldos y de la información financiera de la comunidad',
+        'Roles y permisos por usuario (propietario, administrador, junta)',
+        'Registro de la operación diaria del condominio',
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${siteUrl}/#faq`,
+      inLanguage: 'es-VE',
+      isPartOf: { '@id': `${siteUrl}/#webpage` },
+      mainEntity: faqs.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+  ],
+};
 
   return (
     <>
       <Helmet>
-        <title>HolaVEcinos | El libro claro del condominio</title>
+        <title>HolaVEcinos | Software para gestionar condominios</title>
         <meta
           name="description"
-          content="HolaVEcinos ordena cuotas, pagos, pasivos y decisiones de comunidad para juntas, administradoras y propietarios en Venezuela."
+          content="Toda la información financiera y administrativa, en un solo lugar"
         />
         <link rel="canonical" href={canonicalForPath('/')} />
-        <meta property="og:title" content="HolaVEcinos | El libro claro del condominio" />
+        <meta property="og:title" content="HolaVEcinos | Software para gestionar condominios" />
         <meta
           property="og:description"
           content="Transparencia financiera y operación diaria del condominio en un solo entorno."
         />
         <meta property="og:url" content={canonicalForPath('/')} />
-        <meta property="og:image" content={`${siteUrl}/og-image.svg`} />
-        <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
+        <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+        <script type="application/ld+json">{JSON.stringify(businessJsonLd)}</script>
       </Helmet>
 
       <header className={styles.topbar}>
-        <a className={styles.topbarBrand} href="#brand-title">
-          <img src={logoMark} alt="" width={403} height={349} aria-hidden="true" />
-          <span>
+        <a className={styles.topbarBrand} href="#inicio" aria-label="HolaVecinos, inicio">
+          <span className={styles.wordmark}>
             Hola
             <span className={styles.brandVe}>VE</span>
             cinos
           </span>
         </a>
-        <div className={styles.topbarActions}>
-          <a href={loginUrl} className={styles.topbarLogin}>
-            Log In
-          </a>
-          <a href="#contacto" className={styles.topbarCta}>
-            Escribirnos
-          </a>
-        </div>
         <nav aria-label="Navegación principal" className={styles.topbarNav}>
-          <a href="#problema">Problema</a>
-          <a href="#quienes">Quiénes somos</a>
-          <a href="#folios">Qué hace</a>
-          <a href="#ruta">Ruta</a>
+          <a href="#cambio">Cambio</a>
+          <a href="#pilares">Filosofía</a>
+          <a href="#ruta">Cómo comenzar</a>
           <a href="#faq">FAQ</a>
         </nav>
+        <div className={styles.authGroup}>
+          <a href={loginUrl} className={styles.authLogin}>
+            Iniciar sesión
+          </a>
+        </div>
       </header>
 
       <main id="contenido-principal">
-        <section className={styles.hero} aria-labelledby="brand-title">
+        <section id="inicio" className={styles.hero} aria-labelledby="hero-title">
+          <div className={styles.heroInner}>
           <div className={styles.heroContent}>
-            <p className={styles.localeTag}>Venezuela · solo condominios</p>
-            <img
-              className={styles.heroMark}
-              src={logoMark}
-              alt=""
-              width={403}
-              height={349}
-              aria-hidden="true"
-            />
-            <h1 id="brand-title" className={styles.brandLockup}>
-              <img src={logoWordmark} alt="HolaVEcinos" width={704} height={93} />
+            <p className={styles.heroEpigraph}>Cuentas Claras, Comunidades Sanas</p>
+            <h1 id="hero-title" className={styles.heroTitle}>
+              {HERO_TITLE_LINES[0]}
+              <br />
+              {HERO_TITLE_LINES[1]}
+              <br />
+              en tu <span className={styles.heroTitleAccent}>condominio</span>
             </h1>
-            <p className={styles.heroLine}>
-              Mira exactamente a dónde van las cuotas de tu edificio.
+            <p className={styles.heroSubtitle}>
+              Toda la información
+              <br />
+              financiera y administrativa en un solo lugar
             </p>
             <div className={styles.heroCtas}>
               <a className={styles.ctaPrimary} href="#contacto">
-                Solicitar contacto
-              </a>
-              <a className={styles.ctaGhost} href="#folios">
-                Ver el libro
+                Registrarse para una demo
               </a>
             </div>
+          </div>
+
+          <div className={styles.heroVisual}>
+            <HeroDashboard />
+          </div>
+          </div>
+
+          <div className={styles.heroSkyline} aria-hidden="true">
+            <Skyline />
           </div>
         </section>
 
         <div className={styles.marquee} aria-hidden="true">
           <div className={styles.marqueeTrack}>
-            <span>Sin WhatsApp eterno</span>
-            <span>Sin Excel huérfano</span>
-            <span>Sin capturas perdidas</span>
-            <span>Con rastro auditable</span>
-            <span>Sin WhatsApp eterno</span>
-            <span>Sin Excel huérfano</span>
-            <span>Sin capturas perdidas</span>
-            <span>Con rastro auditable</span>
+            {[...ticker, ...ticker, ...ticker].map((item, index) => (
+              <span key={`${item}-${index}`}>{item}</span>
+            ))}
           </div>
         </div>
 
-        <section id="problema" className={styles.problem} aria-labelledby="problema-title">
-          <div className={styles.problemSlash}>
-            <p className={styles.strike}>grupo del edificio</p>
-            <p className={styles.strike}>hoja compartida</p>
-            <p className={styles.strike}>“te paso el comprobante”</p>
+        <section id="cambio" className={styles.cambio} aria-labelledby="cambio-title">
+          <div className={styles.cambioHead}>
+            <p className={styles.eyebrow}>Antes y después</p>
+            <h2 id="cambio-title">
+              El edificio deja
+              <br />
+              de preguntar y
+              <br />
+              empieza a <span className={styles.headAccent}>entender</span>
+            </h2>
           </div>
-          <div className={styles.problemBody}>
-            <p className={styles.eyebrow}>El corte</p>
-            <h2 id="problema-title">El condominio no cabe en un chat</h2>
-            <p>
-              Validar un pago, seguir una deuda o explicar un gasto no debería ser otro trabajo a
-              media noche. Hace falta un libro que la junta y los vecinos puedan abrir juntos.
-            </p>
+
+          <div className={styles.diptych}>
+            {/* ——— Antes ——— */}
+            <article className={`${styles.panel} ${styles.panelBefore}`}>
+              <header className={styles.panelHead}>
+                <p className={styles.panelLabel}>Antes</p>
+                <h3 className={styles.panelTitle}>El modelo tradicional</h3>
+              </header>
+
+              <FlowRow steps={flujoAntes} tone="before" />
+
+              <div className={styles.panelArt} aria-hidden="true">
+                {/* Chaos: scattered chats, a spreadsheet, loose sheets, tangled links */}
+                <svg viewBox="0 0 520 240" className={styles.chaosSvg}>
+                  <g className={styles.tangle}>
+                    <path d="M150 62 C 232 18, 250 150, 318 96" />
+                    <path d="M120 210 C 190 246, 232 150, 300 120" />
+                    <path d="M188 112 C 240 78, 236 176, 296 168" />
+                    <path d="M64 44 C 18 108, 96 150, 60 214" />
+                  </g>
+
+                  <g className={styles.bubble} transform="rotate(-6 95 51)">
+                    <rect x="20" y="24" width="150" height="54" rx="16" />
+                    <path d="M44 76 L38 92 L62 76 Z" />
+                    <rect className={styles.bubbleLine} x="38" y="42" width="106" height="6" rx="3" />
+                    <rect className={styles.bubbleLine} x="38" y="58" width="70" height="6" rx="3" />
+                  </g>
+
+                  <g className={styles.bubble} transform="rotate(4 205 112)">
+                    <rect x="120" y="86" width="170" height="52" rx="16" />
+                    <rect className={styles.bubbleLine} x="138" y="102" width="128" height="6" rx="3" />
+                    <rect className={styles.bubbleLine} x="138" y="118" width="84" height="6" rx="3" />
+                  </g>
+
+                  <g className={styles.bubble} transform="rotate(-3 106 174)">
+                    <rect x="36" y="150" width="140" height="48" rx="16" />
+                    <path d="M62 198 L56 212 L80 198 Z" />
+                    <rect className={styles.bubbleLine} x="54" y="166" width="96" height="6" rx="3" />
+                    <rect className={styles.bubbleLine} x="54" y="182" width="58" height="6" rx="3" />
+                  </g>
+
+                  <g className={styles.sheet} transform="rotate(-9 305 202)">
+                    <rect x="250" y="176" width="110" height="52" rx="8" />
+                    <rect className={styles.sheetLine} x="262" y="190" width="86" height="5" rx="2.5" />
+                    <rect className={styles.sheetLine} x="262" y="204" width="60" height="5" rx="2.5" />
+                  </g>
+                  <g className={styles.sheet} transform="rotate(7 431 205)">
+                    <rect x="372" y="182" width="118" height="46" rx="8" />
+                    <rect className={styles.sheetLine} x="386" y="196" width="90" height="5" rx="2.5" />
+                    <rect className={styles.sheetLine} x="386" y="210" width="54" height="5" rx="2.5" />
+                  </g>
+
+                  <g className={styles.ledger} transform="rotate(5 395 100)">
+                    <rect x="300" y="30" width="190" height="140" rx="12" />
+                    <rect className={styles.ledgerHead} x="300" y="30" width="190" height="26" rx="12" />
+                    {[86, 112, 138].map((y) => (
+                      <line key={y} className={styles.gridLine} x1="312" y1={y} x2="478" y2={y} />
+                    ))}
+                    {[352, 396, 440].map((x) => (
+                      <line key={x} className={styles.gridLine} x1={x} y1="56" x2={x} y2="170" />
+                    ))}
+                  </g>
+
+                  <g className={styles.clock}>
+                    <circle cx="272" cy="192" r="24" />
+                    <line x1="272" y1="192" x2="272" y2="176" />
+                    <line x1="272" y1="192" x2="286" y2="198" />
+                    <circle cx="272" cy="192" r="2.6" className={styles.clockDot} />
+                  </g>
+                </svg>
+              </div>
+
+              <ul className={styles.painList}>
+                <li>La información vive en chats, correos, y sistemas viejos</li>
+                <li>La junta explica lo mismo una y otra vez</li>
+                <li>El propietario queda sin visibilidad ni control</li>
+              </ul>
+
+              <p className={styles.panelOutcome}>
+                <span className={styles.outcomeIcon} aria-hidden="true">
+                  ✕
+                </span>
+                Horas de la junta gastadas en repetir. Propietarios con dudas y sin control
+              </p>
+            </article>
+
+            <div className={styles.diptychArrow} aria-hidden="true">
+              {/* Stroked vector arrow. strokeWidth is the single weight token for this mark:
+                  2.4 gives a shaft of roughly 1/13 of the circle diameter — bold enough to
+                  read as a transition, light enough not to compete with the panels.
+                  The viewBox min-x of 1 nudges the ink left one unit to offset the
+                  arrowhead's optical mass so it sits visually centred in the ring. */}
+              <svg
+                viewBox="1 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.0}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4.5 12h14.5" />
+                <path d="M13 6l6 6-6 6" />
+              </svg>
+            </div>
+
+            {/* ——— Después ——— */}
+            <article className={`${styles.panel} ${styles.panelAfter}`}>
+              <header className={styles.panelHead}>
+                <p className={styles.panelLabelNow}>Después</p>
+                <h3 className={styles.panelTitle}>El modelo HolaVEcinos</h3>
+              </header>
+
+              <FlowRow steps={flujoDespues} tone="after" />
+
+              <div className={styles.panelArt} aria-hidden="true">
+                {/* Order: one aligned source of truth, lit windows for the neighbours */}
+                <svg viewBox="0 0 520 200" className={styles.orderSvg}>
+                  <rect className={styles.orderCard} x="60" y="16" width="400" height="168" rx="14" />
+                  {[
+                    { y: 48, w: 200, o: 0.35 },
+                    { y: 84, w: 230, o: 0.55 },
+                    { y: 120, w: 170, o: 0.75 },
+                    { y: 156, w: 210, o: 1 },
+                  ].map((row) => (
+                    <g key={row.y}>
+                      <circle className={styles.orderDot} cx="100" cy={row.y} r="6" />
+                      <rect
+                        className={styles.orderBar}
+                        x="120"
+                        y={row.y - 7}
+                        width={row.w}
+                        height="14"
+                        rx="7"
+                        style={{ opacity: row.o }}
+                      />
+                    </g>
+                  ))}
+                  {[0, 1, 2].map((col) =>
+                    [0, 1, 2, 3].map((r) => (
+                      <rect
+                        key={`${col}-${r}`}
+                        className={styles.orderWindow}
+                        x={378 + col * 22}
+                        y={40 + r * 28}
+                        width="16"
+                        height="20"
+                        rx="3"
+                      />
+                    )),
+                  )}
+                  <g className={styles.check}>
+                    <circle cx="424" cy="176" r="15" />
+                    <path d="M417 176 L422 181 L431 170" />
+                  </g>
+                </svg>
+              </div>
+
+              <ul className={styles.gainList}>
+                <li>Un solo lugar: movimientos, facturas y votaciones</li>
+                <li>La junta registra una vez. HolaVEcinos responde por ella</li>
+                <li>El propietario entra cuando quiere y ve todo, sin pedir permiso</li>
+              </ul>
+
+              <div className={styles.outcomeRow}>
+                <p className={styles.outcomeChip}>
+                  <strong>Junta</strong> tiempo recuperado
+                </p>
+                <p className={styles.outcomeChip}>
+                  <strong>Propietarios</strong> control y tranquilidad
+                </p>
+              </div>
+            </article>
           </div>
         </section>
 
-        <section id="folios" className={styles.folios} aria-labelledby="folios-title">
-          <div className={styles.foliosHead}>
-            <h2 id="folios-title">Qué hace hoy</h2>
-            <p>Cuatro pisos del producto. Sin roadmap de fantasía.</p>
+        <section id="pilares" className={styles.pillars} aria-labelledby="pilares-title">
+          <div className={styles.pillarsHead}>
+            <p className={styles.eyebrow}>Nuestra filosofía</p>
+            <h2 id="pilares-title">
+              Hacemos la vida en comunidad <span className={styles.headAccent}>más fácil</span>
+            </h2>
           </div>
-          <div className={styles.folioRail}>
-            {folios.map((folio) => (
-              <article key={folio.apt} className={styles.folio}>
-                <header className={styles.folioMeta}>
-                  <span>Unidad</span>
-                  <strong>{folio.apt}</strong>
-                </header>
-                <h3>{folio.title}</h3>
-                <p>{folio.text}</p>
+          <div className={styles.pillarGrid}>
+            {pillars.map((pillar) => (
+              <article key={pillar.mark} className={styles.pillar}>
+                <span className={styles.pillarNum} aria-hidden="true">
+                  {pillar.mark}
+                </span>
+                <h3>{pillar.title}</h3>
+                <p className={styles.pillarKicker}>{pillar.kicker}</p>
+                <p>{pillar.text}</p>
               </article>
             ))}
           </div>
         </section>
 
+
         <section id="ruta" className={styles.ruta} aria-labelledby="ruta-title">
-          <h2 id="ruta-title">Cómo entra tu edificio</h2>
-          <ol className={styles.stampRow}>
-            {stamps.map((stamp) => (
-              <li key={stamp.mark} className={styles.stamp}>
-                <span className={styles.stampMark} aria-hidden="true">
-                  {stamp.mark}
-                </span>
-                <h3>{stamp.title}</h3>
-                <p>{stamp.text}</p>
-              </li>
-            ))}
-          </ol>
+          <div className={styles.rutaHead}>
+            <p className={styles.eyebrow}>Cómo comenzar</p>
+            <h2 id="ruta-title">
+              Así de fácil es <span className={styles.headAccent}>comenzar</span>
+            </h2>
+            <p className={styles.rutaLede}>
+              Tres pasos. Y estás listo.
+            </p>
+          </div>
+
+          <div className={styles.journey}>
+            <div className={styles.track} aria-hidden="true">
+              <span className={styles.trackStart} />
+            </div>
+
+            <ol className={styles.steps}>
+              {pasos.map((paso, i) => (
+                <li
+                  key={paso.mark}
+                  className={`${styles.step} ${i % 2 === 0 ? styles.stepUp : styles.stepDown}`}
+                >
+                  <article className={styles.stepCard}>
+                    <h3 className={styles.stepTitle}>
+                      <span className={styles.stepNum}>{paso.mark}</span> {paso.title}
+                    </h3>
+                    <p className={styles.stepText}>{paso.text}</p>
+                  </article>
+                  <span className={styles.node} aria-hidden="true">
+                    <StepIcon mark={paso.mark} />
+                  </span>
+                </li>
+              ))}
+            </ol>
+
+            <div className={styles.destino}>
+              <span className={styles.nodeDestino} aria-hidden="true">
+                <StepIcon mark="fin" />
+              </span>
+              <div className={styles.destinoCard}>
+                <div className={styles.destinoHead}>
+                  <span className={styles.destinoCheck} aria-hidden="true">
+                    ✓
+                  </span>
+                  <h3 className={styles.destinoTitle}>LISTO</h3>
+                </div>
+                <p className={styles.destinoText}>
+                  Bienvenidos a una comunidad más transparente y organizada
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.rutaCta}>
+            <a className={styles.ctaPrimary} href="#contacto">
+              Registrarse para una demo
+            </a>
+          </div>
         </section>
 
-        <section className={styles.about} aria-labelledby="quienes-title">
-          <h2 id="quienes-title">Quiénes somos</h2>
-          <p className={styles.aboutTodo}>
-            TODO: agregar copy oficial de equipo, historia y enfoque comercial de holaVEcinos.
-          </p>
-        </section>
 
         <section id="faq" className={styles.faq} aria-labelledby="faq-title">
-          <h2 id="faq-title">Antes de escribir</h2>
+          <h2 id="faq-title">
+            ¿Alguna <span className={styles.headAccent}>duda</span>?
+          </h2>
           <div className={styles.faqList}>
             {faqs.map((item, index) => (
               <details key={item.question} className={styles.faqItem}>
@@ -250,10 +626,16 @@ export function HomePage() {
 
         <section id="contacto" className={styles.contact} aria-labelledby="contacto-title">
           <div className={styles.contactPane}>
+            {/* the hero's own Caracas/El Ávila skyline — same asset, same treatment */}
+            <div className={styles.contactSkyline} aria-hidden="true">
+              <Skyline />
+            </div>
             <p className={styles.eyebrowLight}>Contacto</p>
-            <h2 id="contacto-title">Cuéntanos de tu condominio</h2>
+            <h2 id="contacto-title">
+            Cuéntanos de tu <span className={styles.headAccent}>condominio</span>
+          </h2>
             <p>
-              Te respondemos a <a href="mailto:esucre@holavecinos.app">esucre@holavecinos.app</a>.
+              Te respondemos a <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>.
               Sin compromiso de compra en este primer mensaje.
             </p>
           </div>
