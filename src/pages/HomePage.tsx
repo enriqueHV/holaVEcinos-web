@@ -27,7 +27,7 @@ const pasos = [
 ];
 
 /**
- * The four steps as ONE HolaVEcinos icon family — not four unrelated marks.
+ * The four steps as ONE HolaVecinos icon family — not four unrelated marks.
  * Shared rules: a 44-unit grid, one 2px stroke with round caps and joins, simple
  * geometric primitives, charcoal line work with a single restrained orange accent
  * per icon. Each accent carries the ACTION of its step (the lit windows, the
@@ -92,7 +92,7 @@ const ticker = [
 
 const flujoAntes = ['La junta sabe', 'El propietario pregunta', 'La junta explica'];
 
-const flujoDespues = ['La junta registra', 'HolaVEcinos muestra', 'El propietario entiende'];
+const flujoDespues = ['La junta registra', 'HolaVecinos muestra', 'El propietario entiende'];
 
 /** One shared renderer for both sides, so ANTES and DESPUÉS stay perfectly parallel. */
 function FlowRow({ steps, tone }: { steps: string[]; tone: 'before' | 'after' }) {
@@ -114,19 +114,16 @@ function FlowRow({ steps, tone }: { steps: string[]; tone: 'before' | 'after' })
 
 const pillars = [
   {
-    mark: '01',
     title: 'Cuentas Claras',
     kicker: 'Visibilidad total',
     text: 'Ve cada dólar que entra y sale con el porqué. Acceso directo a facturas, proveedores y comprobantes en un solo clic',
   },
   {
-    mark: '02',
     title: 'Organización Centralizada',
     kicker: 'Cero fricción',
     text: 'Todo el edificio en una sola pantalla. Adiós al ruido de los chats grupales y al cruce de versiones. Un canal ordenado para la gestión, los reportes y las votaciones',
   },
   {
-    mark: '03',
     title: 'Propiedad de la Comunidad',
     kicker: 'Tus datos, tus reglas',
     text: 'El software y los datos de tu edificio pertenecen a la comunidad, no a una plataforma externa o a un administrador pasajero. Control total sobre tu patrimonio',
@@ -137,7 +134,7 @@ const faqs = [
   {
     question: '¿Cuáles son las ventajas?',
     answer:
-      'HolaVEcinos es un software moderno hecho para los propietarios. Nos dimos cuenta de que las plataformas que ya existen no están resolviendo bien dos cosas fundamentales para ellos: la transparencia y la comunicación. HolaVEcinos pone esa información en un solo lugar para que los propietarios tengan mayor visibilidad de lo que ocurre en su comunidad.',
+      'HolaVecinos es un software moderno hecho para los propietarios. Nos dimos cuenta de que las plataformas que ya existen no están resolviendo bien dos cosas fundamentales para ellos: la transparencia y la comunicación. HolaVecinos pone esa información en un solo lugar para que los propietarios tengan mayor visibilidad de lo que ocurre en su comunidad.',
   },
   {
     question: '¿Cómo manejan mis datos?',
@@ -150,24 +147,24 @@ const faqs = [
       'Sí. La plataforma contempla prácticas locales como seguimiento en USD con equivalencia referencial en bolívares según tasa BCV.',
   },
   {
-    question: '¿HolaVEcinos es una administradora?',
+    question: '¿HolaVecinos es una administradora?',
     answer:
       'No. No somos una administradora: somos el software que las administradoras, las juntas y los propietarios usan para llevar las cuentas y la operación del condominio. Tu administración sigue siendo la tuya; nosotros le damos la plataforma donde todo queda visible y ordenado.',
   },
   {
     question: '¿Los propietarios pueden modificar las cuentas?',
     answer:
-      'No. Cada usuario tiene un rol distinto dentro de HolaVEcinos. Propietarios, administradores y junta cuentan con permisos diferentes, para que cada uno pueda consultar o gestionar únicamente la información que le corresponde.',
+      'No. Cada usuario tiene un rol distinto dentro de HolaVecinos. Propietarios, administradores y junta cuentan con permisos diferentes, para que cada uno pueda consultar o gestionar únicamente la información que le corresponde.',
   },
   {
-    question: '¿Cómo puedo llevar HolaVEcinos a mi edificio?',
+    question: '¿Cómo puedo llevar HolaVecinos a mi edificio?',
     answer:
       'Regístrate para una demo y conversamos con la junta o administración de tu edificio. Revisamos cómo trabajan actualmente, resolvemos sus dudas y los acompañamos durante la puesta en marcha.',
   },
   {
     question: '¿Necesito cambiar todo mi proceso desde el primer día?',
     answer:
-      'No. Puedes comenzar poco a poco e incorporar HolaVEcinos a tu proceso actual progresivamente, sin tener que cambiar todo desde el primer día.',
+      'No. Puedes comenzar poco a poco e incorporar HolaVecinos a tu proceso actual progresivamente, sin tener que cambiar todo desde el primer día.',
   },
 ];
 
@@ -177,95 +174,95 @@ export function HomePage() {
   const siteUrl = getSiteUrl();
   const loginUrl = getAppLoginUrl();
   const businessJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${siteUrl}/#organization`,
-      name: BUSINESS_NAME,
-      url: siteUrl,
-      logo: {
-        '@type': 'ImageObject',
-        url: `${siteUrl}/brand/favicon-512.png`,
-        width: 512,
-        height: 512,
-      },
-      email: BUSINESS_EMAIL,
-      telephone: BUSINESS_PHONE,
-      description:
-        'HolaVEcinos es un software de gestión para condominios: ordena cuotas, pagos, gastos, saldos y la información financiera de la comunidad en un solo lugar.',
-      areaServed: { '@type': 'Country', name: 'Venezuela' },
-      contactPoint: [
-        {
-          '@type': 'ContactPoint',
-          contactType: 'customer support',
-          email: BUSINESS_EMAIL,
-          telephone: BUSINESS_PHONE,
-          availableLanguage: ['es'],
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: BUSINESS_NAME,
+        url: siteUrl,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${siteUrl}/brand/favicon-512.png`,
+          width: 512,
+          height: 512,
         },
-      ],
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${siteUrl}/#website`,
-      url: siteUrl,
-      name: BUSINESS_NAME,
-      inLanguage: 'es-VE',
-      publisher: { '@id': `${siteUrl}/#organization` },
-    },
-    {
-      '@type': 'WebPage',
-      '@id': `${siteUrl}/#webpage`,
-      url: siteUrl,
-      name: 'HolaVEcinos | Software para gestionar condominios',
-      inLanguage: 'es-VE',
-      isPartOf: { '@id': `${siteUrl}/#website` },
-      about: { '@id': `${siteUrl}/#software` },
-    },
-    {
-      '@type': 'SoftwareApplication',
-      '@id': `${siteUrl}/#software`,
-      name: BUSINESS_NAME,
-      applicationCategory: 'BusinessApplication',
-      applicationSubCategory: 'Condominium management software',
-      operatingSystem: 'Web',
-      url: siteUrl,
-      inLanguage: 'es-VE',
-      areaServed: { '@type': 'Country', name: 'Venezuela' },
-      publisher: { '@id': `${siteUrl}/#organization` },
-      description:
-        'Software de gestión para condominios. Ayuda a propietarios, administradores y juntas de condominio a tener claridad sobre cuotas, pagos, gastos, saldos y la información financiera de su comunidad, con la operación del día a día en un solo lugar.',
-      featureList: [
-        'Seguimiento de cuotas, pagos y gastos',
-        'Visibilidad de saldos y de la información financiera de la comunidad',
-        'Roles y permisos por usuario (propietario, administrador, junta)',
-        'Registro de la operación diaria del condominio',
-      ],
-    },
-    {
-      '@type': 'FAQPage',
-      '@id': `${siteUrl}/#faq`,
-      inLanguage: 'es-VE',
-      isPartOf: { '@id': `${siteUrl}/#webpage` },
-      mainEntity: faqs.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: { '@type': 'Answer', text: item.answer },
-      })),
-    },
-  ],
-};
+        email: BUSINESS_EMAIL,
+        telephone: BUSINESS_PHONE,
+        description:
+          'HolaVecinos es un software de gestión para condominios: ordena cuotas, pagos, gastos, saldos y la información financiera de la comunidad en un solo lugar.',
+        areaServed: { '@type': 'Country', name: 'Venezuela' },
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            contactType: 'customer support',
+            email: BUSINESS_EMAIL,
+            telephone: BUSINESS_PHONE,
+            availableLanguage: ['es'],
+          },
+        ],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        url: siteUrl,
+        name: BUSINESS_NAME,
+        inLanguage: 'es-VE',
+        publisher: { '@id': `${siteUrl}/#organization` },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${siteUrl}/#webpage`,
+        url: siteUrl,
+        name: 'HolaVecinos | Software para gestionar condominios',
+        inLanguage: 'es-VE',
+        isPartOf: { '@id': `${siteUrl}/#website` },
+        about: { '@id': `${siteUrl}/#software` },
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': `${siteUrl}/#software`,
+        name: BUSINESS_NAME,
+        applicationCategory: 'BusinessApplication',
+        applicationSubCategory: 'Condominium management software',
+        operatingSystem: 'Web',
+        url: siteUrl,
+        inLanguage: 'es-VE',
+        areaServed: { '@type': 'Country', name: 'Venezuela' },
+        publisher: { '@id': `${siteUrl}/#organization` },
+        description:
+          'Software de gestión para condominios. Ayuda a propietarios, administradores y juntas de condominio a tener claridad sobre cuotas, pagos, gastos, saldos y la información financiera de su comunidad, con la operación del día a día en un solo lugar.',
+        featureList: [
+          'Seguimiento de cuotas, pagos y gastos',
+          'Visibilidad de saldos y de la información financiera de la comunidad',
+          'Roles y permisos por usuario (propietario, administrador, junta)',
+          'Registro de la operación diaria del condominio',
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${siteUrl}/#faq`,
+        inLanguage: 'es-VE',
+        isPartOf: { '@id': `${siteUrl}/#webpage` },
+        mainEntity: faqs.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      },
+    ],
+  };
 
   return (
     <>
       <Helmet>
-        <title>HolaVEcinos | Software para gestionar condominios</title>
+        <title>HolaVecinos | Software para gestionar condominios</title>
         <meta
           name="description"
           content="Toda la información financiera y administrativa, en un solo lugar"
         />
         <link rel="canonical" href={canonicalForPath('/')} />
-        <meta property="og:title" content="HolaVEcinos | Software para gestionar condominios" />
+        <meta property="og:title" content="HolaVecinos | Software para gestionar condominios" />
         <meta
           property="og:description"
           content="Transparencia financiera y operación diaria del condominio en un solo entorno."
@@ -458,7 +455,7 @@ export function HomePage() {
             <article className={`${styles.panel} ${styles.panelAfter}`}>
               <header className={styles.panelHead}>
                 <p className={styles.panelLabelNow}>Después</p>
-                <h3 className={styles.panelTitle}>El modelo HolaVEcinos</h3>
+                <h3 className={styles.panelTitle}>El modelo HolaVecinos</h3>
               </header>
 
               <FlowRow steps={flujoDespues} tone="after" />
@@ -508,7 +505,7 @@ export function HomePage() {
 
               <ul className={styles.gainList}>
                 <li>Un solo lugar: movimientos, facturas y votaciones</li>
-                <li>La junta registra una vez. HolaVEcinos responde por ella</li>
+                <li>La junta registra una vez. HolaVecinos responde por ella</li>
                 <li>El propietario entra cuando quiere y ve todo, sin pedir permiso</li>
               </ul>
 
@@ -533,10 +530,7 @@ export function HomePage() {
           </div>
           <div className={styles.pillarGrid}>
             {pillars.map((pillar) => (
-              <article key={pillar.mark} className={styles.pillar}>
-                <span className={styles.pillarNum} aria-hidden="true">
-                  {pillar.mark}
-                </span>
+              <article key={pillar.title} className={styles.pillar}>
                 <h3>{pillar.title}</h3>
                 <p className={styles.pillarKicker}>{pillar.kicker}</p>
                 <p>{pillar.text}</p>

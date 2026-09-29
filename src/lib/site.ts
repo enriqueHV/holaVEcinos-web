@@ -1,6 +1,9 @@
 export const DEFAULT_SITE_URL = 'https://holavecinos.app';
+/** Production origin of the app (login, dashboard), served from its own subdomain. */
+export const PRODUCTION_APP_URL = 'https://app.holavecinos.app';
 /** Local Vite origin of `holaVEcinos (app)/Frontend` (see that project's RUNNING.md). */
-export const DEFAULT_APP_URL = 'http://localhost:5173';
+export const LOCAL_APP_URL = 'http://localhost:5173';
+export const DEFAULT_APP_URL = import.meta.env.DEV ? LOCAL_APP_URL : PRODUCTION_APP_URL;
 
 function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, '');

@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { Resend } from 'resend';
 import { ZodError } from 'zod';
 import {
@@ -8,11 +7,28 @@ import {
   type ContactSubmissionField,
   unitRangeLabelByValue,
 } from '../src/lib/contactSchema';
+import { CONTACT_FALLBACK_EMAIL } from '../src/lib/contactResponse';
+import { renderAdminNotificationEmail, renderConfirmationEmail } from './email/render';
+
+/**
+ * Variables que lee el handler. Cada runtime las entrega a su manera (`process.env` en Vercel y
+ * en dev, `context.env` en Cloudflare Pages Functions, donde `process` no existe), así que el
+ * llamador las pasa en vez de que el handler las busque en un global.
+ */
+export interface ContactEnv {
+  RESEND_API_KEY?: string;
+  RESEND_FROM_EMAIL?: string;
+  CONTACT_TO_EMAIL?: string;
+  CONTACT_RATE_LIMIT_MAX?: string;
+  CONTACT_RATE_LIMIT_WINDOW_MS?: string;
+}
 
 interface ContactRequestContext {
   method: string;
   body: unknown;
   ipAddress: string;
+  /** Si se omite se usa `process.env` (Vercel y dev). */
+  env?: ContactEnv;
 }
 
 interface ContactSuccessResponse {
@@ -39,8 +55,7 @@ type RateLimitEntry = {
 
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
-function envNumber(name: string, fallback: number): number {
-  const raw = process.env[name];
+function envNumber(raw: string | undefined, fallback: number): number {
   if (!raw) return fallback;
   const numeric = Number(raw);
   return Number.isFinite(numeric) && numeric > 0 ? numeric : fallback;
@@ -54,12 +69,15 @@ function cleanRateLimitStore(now: number): void {
   }
 }
 
-function consumeRateLimit(ipAddress: string): { allowed: true } | { allowed: false; retryAfterMs: number } {
+function consumeRateLimit(
+  ipAddress: string,
+  env: ContactEnv,
+): { allowed: true } | { allowed: false; retryAfterMs: number } {
   const now = Date.now();
   cleanRateLimitStore(now);
 
-  const maxRequests = envNumber('CONTACT_RATE_LIMIT_MAX', 5);
-  const windowMs = envNumber('CONTACT_RATE_LIMIT_WINDOW_MS', 60 * 60 * 1000);
+  const maxRequests = envNumber(env.CONTACT_RATE_LIMIT_MAX, 5);
+  const windowMs = envNumber(env.CONTACT_RATE_LIMIT_WINDOW_MS, 60 * 60 * 1000);
   const existing = rateLimitStore.get(ipAddress);
 
   if (!existing) {
@@ -87,37 +105,6 @@ function toFieldErrors(error: ZodError<ContactSubmission>): Partial<Record<Conta
   }
 
   return fieldErrors;
-}
-
-function buildInternalNotificationText(submission: ContactSubmission, ipAddress: string): string {
-  return [
-    'Nuevo lead desde holavecinos.app',
-    '',
-    `Nombre: ${submission.name}`,
-    `Email: ${submission.email}`,
-    `Teléfono: ${submission.phone || 'No indicado'}`,
-    `Condominio/Organización: ${submission.organizationName}`,
-    `Rol: ${roleLabelByValue[submission.role]}`,
-    `Unidades: ${unitRangeLabelByValue[submission.unitRange]}`,
-    '',
-    'Mensaje:',
-    submission.message,
-    '',
-    `Consentimiento de datos: Sí`,
-    `IP origen: ${ipAddress}`,
-  ].join('\n');
-}
-
-function buildProspectConfirmationText(submission: ContactSubmission): string {
-  return [
-    `Hola ${submission.name},`,
-    '',
-    'Recibimos tu solicitud correctamente. Gracias por tu interés en HolaVEcinos.',
-    '',
-    'Ya tenemos tu información y nos pondremos en contacto contigo pronto.',
-    '',
-    'Equipo HolaVEcinos',
-  ].join('\n');
 }
 
 function resolveIpAddress(ipAddress: string): string {
@@ -160,8 +147,9 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
     };
   }
 
+  const env = context.env ?? (process.env as ContactEnv);
   const safeIpAddress = resolveIpAddress(context.ipAddress);
-  const rateLimit = consumeRateLimit(safeIpAddress);
+  const rateLimit = consumeRateLimit(safeIpAddress, env);
   if (!rateLimit.allowed) {
     const retryInMinutes = Math.ceil(rateLimit.retryAfterMs / 60000);
     return {
@@ -173,30 +161,47 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
     };
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const resendFromEmail = process.env.RESEND_FROM_EMAIL;
-  const destinationEmail = process.env.CONTACT_TO_EMAIL || 'info@holavecinos.app';
+  const resendApiKey = env.RESEND_API_KEY;
+  const resendFromEmail = env.RESEND_FROM_EMAIL;
+  const destinationEmail = env.CONTACT_TO_EMAIL || CONTACT_FALLBACK_EMAIL;
 
   if (!resendApiKey || !resendFromEmail) {
     return {
       status: 500,
       payload: {
         ok: false,
-        message: 'El formulario no está configurado todavía. Escríbenos a info@holavecinos.app.',
+        message: `El formulario no está configurado todavía. Escríbenos a ${CONTACT_FALLBACK_EMAIL}.`,
       },
     };
   }
 
   const resend = new Resend(resendApiKey);
+  const adminEmail = await renderAdminNotificationEmail({
+    name: submission.name,
+    email: submission.email,
+    phone: submission.phone,
+    organizationName: submission.organizationName,
+    roleLabel: roleLabelByValue[submission.role],
+    unitRangeLabel: unitRangeLabelByValue[submission.unitRange],
+    message: submission.message,
+    ipAddress: safeIpAddress,
+  });
   const leadMessage = await resend.emails.send({
     from: resendFromEmail,
     to: destinationEmail,
     replyTo: submission.email,
-    subject: `Nuevo lead web: ${submission.organizationName}`,
-    text: buildInternalNotificationText(submission, safeIpAddress),
+    subject: adminEmail.subject,
+    html: adminEmail.html,
+    text: adminEmail.text,
   });
 
   if (leadMessage.error) {
+    // Resend solo loguea sus errores fuera de producción; sin esto un remitente sin verificar
+    // o una clave revocada se vería igual que "todo bien" en los logs del hosting.
+    console.error('[contact] Resend rechazó el correo al equipo', {
+      name: leadMessage.error.name,
+      message: leadMessage.error.message,
+    });
     return {
       status: 502,
       payload: {
@@ -206,14 +211,20 @@ export async function handleContactRequest(context: ContactRequestContext): Prom
     };
   }
 
+  const confirmationEmail = await renderConfirmationEmail({ name: submission.name });
   const confirmationMessage = await resend.emails.send({
     from: resendFromEmail,
     to: submission.email,
-    subject: 'Recibimos tu solicitud — HolaVEcinos',
-    text: buildProspectConfirmationText(submission),
+    subject: confirmationEmail.subject,
+    html: confirmationEmail.html,
+    text: confirmationEmail.text,
   });
 
   if (confirmationMessage.error) {
+    console.error('[contact] Resend rechazó la confirmación al prospecto', {
+      name: confirmationMessage.error.name,
+      message: confirmationMessage.error.message,
+    });
     return {
       status: 200,
       payload: {

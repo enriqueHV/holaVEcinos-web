@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import type { IncomingMessage } from 'node:http';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';

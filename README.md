@@ -31,7 +31,7 @@ Crea un archivo `.env` en la raíz del proyecto usando `.env.example` como base.
 Variables principales:
 
 - `VITE_SITE_URL`: URL canónica del sitio (ejemplo `https://holavecinos.app`)
-- `VITE_APP_URL`: origen del frontend de la app (local `http://localhost:5173`)
+- `VITE_APP_URL`: origen del frontend de la app (opcional; dev `http://localhost:5173`, producción `https://app.holavecinos.app`)
 - `VITE_APP_LOGIN_URL`: opcional; URL completa de login si no es `${VITE_APP_URL}/login`
 - `VITE_CONTACT_ENDPOINT`: endpoint del formulario (por defecto `/api/contact`)
 - `CONTACT_TO_EMAIL`: correo destino de leads
