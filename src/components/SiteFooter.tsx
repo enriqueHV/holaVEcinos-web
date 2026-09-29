@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './SiteFooter.module.css';
 import logoMark from '../assets/brand/logo-mark.png';
+import { BUSINESS_EMAIL, BUSINESS_PHONE, BUSINESS_PHONE_DISPLAY } from '../lib/contact';
 
 const year = new Date().getFullYear();
 
@@ -18,7 +19,8 @@ export function SiteFooter() {
           </span>
         </p>
         <div className={styles.meta}>
-          <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>
+          <a href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a>
+          <a href={`tel:${BUSINESS_PHONE}`}>{BUSINESS_PHONE_DISPLAY}</a>
           <Link to="/privacidad">Política de privacidad</Link>
         </div>
         <p className={styles.copy}>© {year} HolaVEcinos. Todos los derechos reservados.</p>

@@ -46,7 +46,7 @@
 }
 
 .brandVe {
-  color: var(--hv-orange-700);
+  color: var(--hv-brand-ve, #f27a1a);
 }
 
 .meta {

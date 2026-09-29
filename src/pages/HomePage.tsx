@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ContactForm } from '../components/ContactForm';
 import { SiteFooter } from '../components/SiteFooter';
+import { BUSINESS_EMAIL, BUSINESS_NAME, BUSINESS_PHONE } from '../lib/contact';
 import { HeroDashboard } from '../components/HeroDashboard';
 import { Skyline } from '../components/Skyline';
 import { canonicalForPath, getAppLoginUrl, getSiteUrl } from '../lib/site';
@@ -10,23 +11,18 @@ import styles from './HomePage.module.css';
 const pasos = [
   {
     mark: '01',
-    title: 'Registro',
-    text: 'Registras tu edificio con nosotros',
+    title: 'REGÍSTRATE',
+    text: 'Registra tu condominio con nosotros',
   },
   {
     mark: '02',
-    title: 'Aprobación',
-    text: 'La junta invita y aprueba a los propietarios del condominio',
+    title: 'ORGANIZA',
+    text: 'El administrador carga la información del edificio, como saldos y alícuotas',
   },
   {
     mark: '03',
-    title: 'Carga',
-    text: 'El administrador sube la información de la propiedad',
-  },
-  {
-    mark: '04',
-    title: 'Acceso Total',
-    text: '¡Listo! Tienes visibilidad y control 24/7, sin tener que pedir a nadie',
+    title: 'INVITA',
+    text: 'La junta invita a los propietarios del condominio a través de correo electrónico',
   },
 ];
 
@@ -40,47 +36,47 @@ const pasos = [
  */
 function StepIcon({ mark }: { mark: string }) {
   const common = {
-    viewBox: '0 0 44 44',
+    viewBox: '0 0 24 24',
     fill: 'none',
-    strokeWidth: 2,
+    stroke: 'currentColor',
+    strokeWidth: 1.9,
     strokeLinecap: 'round' as const,
     strokeLinejoin: 'round' as const,
   };
   switch (mark) {
-    /* 01 Registro — a building joins, drawn from the same geometry as the skyline towers */
+    /* 01 Regístrate — user-plus */
     case '01':
       return (
         <svg {...common} aria-hidden="true">
-          <rect className={styles.iconLine} x="15.5" y="7" width="16" height="30" rx="2" />
-          <rect className={styles.iconLine} x="6" y="17" width="9.5" height="20" rx="2" />
-          <path className={styles.iconAccent} d="M20.5 13h6M20.5 19h6M9.5 23h2.5" />
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M19 8v6M22 11h-6" />
         </svg>
       );
-    /* 02 Aprobación — a seal of approval: a badge (two concentric circles) with a
-       single check centred inside it, so the approval reads as official */
+    /* 02 Organiza — list-checks */
     case '02':
       return (
         <svg {...common} aria-hidden="true">
-          <circle className={styles.iconLine} cx="22" cy="22" r="15" />
-          <circle className={styles.iconLine} cx="22" cy="22" r="10.5" />
-          <path className={styles.iconAccent} d="M16.75 22.25l3.6 3.6 7.15-7.6" />
+          <path d="m3 17 2 2 4-4" />
+          <path d="m3 7 2 2 4-4" />
+          <path d="M13 6h8M13 12h8M13 18h8" />
         </svg>
       );
-    /* 03 Carga — information goes in: base tray + upload arrow */
+    /* 03 Invita — mail-plus */
     case '03':
       return (
         <svg {...common} aria-hidden="true">
-          <path className={styles.iconLine} d="M8 27v5.5a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V27" />
-          <path className={styles.iconAccent} d="M22 31V9M15 16l7-7 7 7" />
+          <path d="M22 13V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          <path d="M19 16v6M16 19h6" />
         </svg>
       );
-    /* 04 Acceso Total — the finish: a flag on a pole standing on the finish line */
+    /* the end of the journey — a finish flag */
     default:
       return (
         <svg {...common} aria-hidden="true">
-          <path className={styles.iconLine} d="M15.5 7v30" />
-          <path className={styles.iconAccent} d="M15.5 9l14.5 5.5-14.5 5.5z" />
-          <path className={styles.iconLine} d="M7.5 37h29" />
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+          <path d="M4 22v-7" />
         </svg>
       );
   }
@@ -138,7 +134,7 @@ const faqs = [
   {
     question: '¿Cuáles son las ventajas?',
     answer:
-      'HolaVecinos es una plataforma moderna hecha para los propietarios. Nos dimos cuenta de que las plataformas que ya existen no están resolviendo bien dos cosas fundamentales para ellos: la transparencia y la comunicación. HolaVecinos pone esa información en un solo lugar para que los propietarios tengan mayor visibilidad de lo que ocurre en su comunidad.',
+      'HolaVecinos es un software moderno hecho para los propietarios. Nos dimos cuenta de que las plataformas que ya existen no están resolviendo bien dos cosas fundamentales para ellos: la transparencia y la comunicación. HolaVecinos pone esa información en un solo lugar para que los propietarios tengan mayor visibilidad de lo que ocurre en su comunidad.',
   },
   {
     question: '¿Cómo manejan mis datos?',
@@ -177,19 +173,82 @@ const HERO_TITLE_LINES = ['Visibilidad total', 'de lo que importa'];
 export function HomePage() {
   const siteUrl = getSiteUrl();
   const loginUrl = getAppLoginUrl();
-  const organizationJsonLd = {
+  const businessJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'HolaVecinos',
-    url: siteUrl,
-    email: 'info@holavecinos.app',
-    contactPoint: [
+    '@graph': [
       {
-        '@type': 'ContactPoint',
-        email: 'info@holavecinos.app',
-        contactType: 'sales',
-        areaServed: 'VE',
-        availableLanguage: ['es'],
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: BUSINESS_NAME,
+        url: siteUrl,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${siteUrl}/brand/favicon-512.png`,
+          width: 512,
+          height: 512,
+        },
+        email: BUSINESS_EMAIL,
+        telephone: BUSINESS_PHONE,
+        description:
+          'HolaVecinos es un software de gestión para condominios: ordena cuotas, pagos, gastos, saldos y la información financiera de la comunidad en un solo lugar.',
+        areaServed: { '@type': 'Country', name: 'Venezuela' },
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            contactType: 'customer support',
+            email: BUSINESS_EMAIL,
+            telephone: BUSINESS_PHONE,
+            availableLanguage: ['es'],
+          },
+        ],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        url: siteUrl,
+        name: BUSINESS_NAME,
+        inLanguage: 'es-VE',
+        publisher: { '@id': `${siteUrl}/#organization` },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${siteUrl}/#webpage`,
+        url: siteUrl,
+        name: 'HolaVecinos | Software para gestionar condominios',
+        inLanguage: 'es-VE',
+        isPartOf: { '@id': `${siteUrl}/#website` },
+        about: { '@id': `${siteUrl}/#software` },
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': `${siteUrl}/#software`,
+        name: BUSINESS_NAME,
+        applicationCategory: 'BusinessApplication',
+        applicationSubCategory: 'Condominium management software',
+        operatingSystem: 'Web',
+        url: siteUrl,
+        inLanguage: 'es-VE',
+        areaServed: { '@type': 'Country', name: 'Venezuela' },
+        publisher: { '@id': `${siteUrl}/#organization` },
+        description:
+          'Software de gestión para condominios. Ayuda a propietarios, administradores y juntas de condominio a tener claridad sobre cuotas, pagos, gastos, saldos y la información financiera de su comunidad, con la operación del día a día en un solo lugar.',
+        featureList: [
+          'Seguimiento de cuotas, pagos y gastos',
+          'Visibilidad de saldos y de la información financiera de la comunidad',
+          'Roles y permisos por usuario (propietario, administrador, junta)',
+          'Registro de la operación diaria del condominio',
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${siteUrl}/#faq`,
+        inLanguage: 'es-VE',
+        isPartOf: { '@id': `${siteUrl}/#webpage` },
+        mainEntity: faqs.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
       },
     ],
   };
@@ -197,20 +256,20 @@ export function HomePage() {
   return (
     <>
       <Helmet>
-        <title>HolaVecinos | Confianza que se ve. Cuentas que cuadran.</title>
+        <title>HolaVecinos | Software para gestionar condominios</title>
         <meta
           name="description"
           content="Toda la información financiera y administrativa, en un solo lugar"
         />
         <link rel="canonical" href={canonicalForPath('/')} />
-        <meta property="og:title" content="HolaVecinos | Confianza que se ve. Cuentas que cuadran." />
+        <meta property="og:title" content="HolaVecinos | Software para gestionar condominios" />
         <meta
           property="og:description"
           content="Transparencia financiera y operación diaria del condominio en un solo entorno."
         />
         <meta property="og:url" content={canonicalForPath('/')} />
-        <meta property="og:image" content={`${siteUrl}/og-image.svg`} />
-        <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
+        <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+        <script type="application/ld+json">{JSON.stringify(businessJsonLd)}</script>
       </Helmet>
 
       <header className={styles.topbar}>
@@ -383,7 +442,7 @@ export function HomePage() {
                 viewBox="1 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={2.4}
+                strokeWidth={2.0}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
@@ -488,24 +547,51 @@ export function HomePage() {
               Así de fácil es <span className={styles.headAccent}>comenzar</span>
             </h2>
             <p className={styles.rutaLede}>
-              Cuatro pasos. Te acompañamos de principio a fin.
+              Tres pasos. Y estás listo.
             </p>
           </div>
 
-          <ol className={styles.steps}>
-            {pasos.map((paso) => (
-              <li key={paso.mark} className={styles.step}>
-                <span className={styles.stepIcon} aria-hidden="true">
-                  <StepIcon mark={paso.mark} />
-                </span>
-                <span className={styles.stepNum} aria-hidden="true">
-                  {paso.mark}
-                </span>
-                <h3 className={styles.stepTitle}>{paso.title}</h3>
-                <p className={styles.stepText}>{paso.text}</p>
-              </li>
-            ))}
-          </ol>
+          <div className={styles.journey}>
+            <div className={styles.track} aria-hidden="true">
+              <span className={styles.trackStart} />
+            </div>
+
+            <ol className={styles.steps}>
+              {pasos.map((paso, i) => (
+                <li
+                  key={paso.mark}
+                  className={`${styles.step} ${i % 2 === 0 ? styles.stepUp : styles.stepDown}`}
+                >
+                  <article className={styles.stepCard}>
+                    <h3 className={styles.stepTitle}>
+                      <span className={styles.stepNum}>{paso.mark}</span> {paso.title}
+                    </h3>
+                    <p className={styles.stepText}>{paso.text}</p>
+                  </article>
+                  <span className={styles.node} aria-hidden="true">
+                    <StepIcon mark={paso.mark} />
+                  </span>
+                </li>
+              ))}
+            </ol>
+
+            <div className={styles.destino}>
+              <span className={styles.nodeDestino} aria-hidden="true">
+                <StepIcon mark="fin" />
+              </span>
+              <div className={styles.destinoCard}>
+                <div className={styles.destinoHead}>
+                  <span className={styles.destinoCheck} aria-hidden="true">
+                    ✓
+                  </span>
+                  <h3 className={styles.destinoTitle}>LISTO</h3>
+                </div>
+                <p className={styles.destinoText}>
+                  Bienvenidos a una comunidad más transparente y organizada
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className={styles.rutaCta}>
             <a className={styles.ctaPrimary} href="#contacto">
@@ -534,13 +620,16 @@ export function HomePage() {
 
         <section id="contacto" className={styles.contact} aria-labelledby="contacto-title">
           <div className={styles.contactPane}>
+            {/* the hero's own Caracas/El Ávila skyline — same asset, same treatment */}
+            <div className={styles.contactSkyline} aria-hidden="true">
+              <Skyline />
+            </div>
             <p className={styles.eyebrowLight}>Contacto</p>
             <h2 id="contacto-title">
             Cuéntanos de tu <span className={styles.headAccent}>condominio</span>
           </h2>
             <p>
-              Te respondemos a <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>.
-              Sin compromiso de compra en este primer mensaje.
+              Escríbenos a <a href="mailto:info@holavecinos.app">info@holavecinos.app</a>, sin compromiso.
             </p>
           </div>
           <div className={styles.contactFormPane}>

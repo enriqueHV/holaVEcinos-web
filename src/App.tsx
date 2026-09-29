@@ -1,6 +1,7 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export default function App() {
   return (
@@ -11,7 +12,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/privacidad" element={<PrivacyPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

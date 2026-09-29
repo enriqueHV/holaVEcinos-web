@@ -10,6 +10,7 @@
  */
 :root {
   /* ——— Brand ——— */
+  --hv-brand-ve: #f27a1a; /* wordmark "VE" — pinned, cannot fall back to terracotta */
   --hv-orange: #f27a1a; /* primary — CTAs, active nav, the "VE" in wordmark. Fill only: 2.9:1 on white, too low for text */
   --hv-orange-600: #d96712; /* hover fill. As text: 3.25:1 on cream — bold 24px+ headings only */
   --hv-orange-700: #a84c0d; /* text-safe orange — 4.5:1+ on cream/paper/orange-100. Use for orange TEXT, icons, and focus rings on light surfaces */

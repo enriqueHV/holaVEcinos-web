@@ -22,7 +22,7 @@
 }
 
 .brandVe {
-  color: var(--hv-orange-700);
+  color: var(--hv-brand-ve, #f27a1a);
 }
 
 /* Auth pair pinned to the far right of the bar */
@@ -42,7 +42,7 @@
   /* the single flexible track: pushes the whole menu to the right edge of the bar */
   margin-left: auto;
   /* breathing room so the last item never touches the login button */
-  margin-right: var(--space-6);
+  margin-right: var(--space-2);
 }
 
 .topbarBrand {
@@ -140,7 +140,77 @@
     #ffa45a 100%
   );
   color: var(--hv-charcoal);
-  border-bottom: var(--hv-rule);
+  border-bottom: 0;
+}
+.heroInner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(2rem, 5vw, 3.25rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3.5rem, 7vw, 5.5rem);
+}
+
+.heroVisual {
+  width: 88%;
+  margin-inline-start: auto;
+  transform: translateY(-3%);
+}
+
+
+.heroSkyline {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  /* the svg keeps its own aspect, so the city is never cropped or banded */
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* On narrow screens the wide city would over-zoom: keep it as a base band. */
+@media (max-width: 760px) {
+  /* tighter stack, and a slightly raised city band */
+  .heroInner {
+    gap: clamp(0.85rem, 3.5vw, 1.5rem);
+    padding-top: clamp(1.5rem, 4vw, 2.25rem);
+    padding-bottom: clamp(2.5rem, 7vw, 3.75rem);
+  }
+  .heroTitle {
+    font-size: clamp(2.3rem, 11vw, 3rem);
+    line-height: 1.06;
+  }
+  /* .heroContent prefix raises specificity so this beats the base rule above,
+     which otherwise wins on source order alone */
+  .heroContent .heroSubtitle {
+    margin-top: var(--space-4);
+    width: auto;
+    max-width: none;
+    font-size: clamp(0.72rem, 3.5vw, 1rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+  }
+  .heroCtas { margin-top: var(--space-5); }
+}
+
+.heroInner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(2rem, 5vw, 3.25rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3.5rem, 7vw, 5.5rem);
+}
+
+.heroVisual {
+  width: 88%;
+  margin-inline-start: auto;
+  transform: translateY(-3%);
 }
 
 .heroSkyline {
@@ -187,7 +257,7 @@
      not transform: the `rise` entrance animation owns this element's transform (and
      with fill-mode both it keeps it applied), so a transform here would be overridden. */
   position: relative;
-  top: -1.25rem;
+  top: -1.75rem;
   width: min(100%, 940px);
   padding: clamp(3.5rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 5vh, 3.5rem);
   animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -226,7 +296,7 @@
 }
 
 .heroCtas {
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
@@ -283,7 +353,7 @@
   overflow: hidden;
   background: var(--hv-orange);
   color: var(--text-on-accent);
-  border-top: var(--hv-rule);
+  border-top: 0;
   border-bottom: var(--hv-rule);
 }
 
@@ -411,8 +481,8 @@
   align-items: center;
   justify-content: center;
   align-self: center;
-  width: 76px;
-  height: 76px;
+  width: 64px;
+  height: 64px;
   border-radius: 999px;
   background: var(--hv-paper);
   border: var(--hv-rule);
@@ -427,8 +497,8 @@
    scales as a unit and stays dead centre in the circle on every viewport. */
 .diptychArrow svg {
   display: block;
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
 }
 
 .panel {
@@ -1235,11 +1305,11 @@
 }
 
 /* ============================================================
-   Así de fácil es comenzar — four light steps
+   Así de fácil es comenzar — the onboarding journey.
+   ONE track runs through every node; the cards alternate above
+   and below it, so the eye follows a single continuous path.
    ============================================================ */
-.rutaHead {
-  max-width: 60ch;
-}
+.rutaHead { max-width: 60ch; }
 
 .rutaLede {
   margin: var(--space-4) 0 var(--space-7);
@@ -1249,75 +1319,198 @@
   color: var(--hv-charcoal-500);
 }
 
+.journey {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 0.92fr);
+  column-gap: clamp(0.8rem, 2vw, 1.6rem);
+  align-items: stretch;
+}
+
+/* ——— the track: a single line, behind everything ——— */
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--hv-orange) 20%, transparent) 0%,
+    color-mix(in srgb, var(--hv-orange) 55%, transparent) 40%,
+    var(--hv-orange) 84%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* start marker */
+.trackStart {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--hv-orange) 38%, transparent);
+}
+
 .steps {
+  grid-column: 1 / 4;
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: clamp(0.9rem, 2vw, 1.4rem);
-  counter-reset: paso;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 1fr auto 1fr;
+  column-gap: clamp(0.8rem, 2vw, 1.6rem);
+  z-index: 1;
 }
 
 .step {
-  position: relative;
+  grid-row: 1 / 4;
   display: grid;
-  gap: 0.5rem;
-  align-content: start;
-  padding: clamp(1.1rem, 2vw, 1.5rem);
-  border-radius: 20px;
+  grid-template-rows: 1fr auto 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+/* the node sits ON the track; its card hangs above or below it */
+.node,
+.nodeDestino {
+  grid-row: 2;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(150deg, var(--hv-orange), var(--hv-orange-600));
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--hv-orange) 12%, transparent),
+    0 12px 22px -12px rgba(242, 122, 26, 0.7);
+}
+
+.node svg,
+.nodeDestino svg { width: 25px; height: 25px; }
+
+.stepCard {
+  position: relative;
+  width: 100%;
+  padding: clamp(0.9rem, 1.6vw, 1.15rem) clamp(0.9rem, 1.8vw, 1.25rem);
+  border-radius: 18px;
   background: var(--hv-paper);
   border: var(--hv-rule);
   box-shadow:
     0 1px 2px rgba(42, 46, 56, 0.05),
     0 14px 30px -22px rgba(42, 46, 56, 0.35);
-  transition:
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 320ms ease;
+  text-align: left;
 }
 
-.step:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 3px 6px rgba(42, 46, 56, 0.06),
-    0 26px 44px -26px rgba(42, 46, 56, 0.42);
+/* short connector from each card down/up to its node on the line */
+.stepCard::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--hv-orange) 45%, transparent);
 }
 
-.stepIcon {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 15px;
-  background: color-mix(in srgb, var(--hv-orange) 12%, var(--hv-paper));
-  border: 1px solid color-mix(in srgb, var(--hv-orange) 26%, transparent);
-  color: var(--hv-orange-700);
-}
-
-.stepIcon svg {
-  width: 24px;
-  height: 24px;
-}
+.stepUp .stepCard { grid-row: 1; align-self: end; margin-bottom: 22px; }
+.stepUp .stepCard::after { top: 100%; }
+.stepDown .stepCard { grid-row: 3; align-self: start; margin-top: 22px; }
+.stepDown .stepCard::after { bottom: 100%; }
 
 .stepNum {
   font-family: var(--font-mono);
-  font-size: var(--fs-11);
+  font-size: var(--fs-12);
   font-weight: 600;
-  letter-spacing: 0.14em;
-  color: var(--hv-charcoal-500);
+  letter-spacing: 0.1em;
+  color: var(--hv-orange-700);
 }
 
 .stepTitle {
   margin: 0;
   font-family: var(--font-display);
-  font-size: var(--fs-19, 1.1875rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: var(--fs-20);
+  font-weight: 700;
+  letter-spacing: 0.01em;
   color: var(--hv-charcoal);
 }
 
 .stepText {
+  margin: 0.4rem 0 0;
+  font-size: var(--fs-15);
+  line-height: 1.55;
+  color: var(--hv-charcoal-500);
+}
+
+/* ——— LISTO: the end of the journey, a touch more present ——— */
+.destino {
+  grid-column: 4;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  justify-items: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.nodeDestino {
+  width: 54px;
+  height: 54px;
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--hv-orange) 12%, transparent),
+    0 12px 22px -12px rgba(242, 122, 26, 0.7);
+}
+
+.nodeDestino svg { width: 25px; height: 25px; }
+
+.destinoCard {
+  grid-row: 3;
+  align-self: start;
+  width: 100%;
+  margin-top: 22px;
+  padding: clamp(1rem, 1.8vw, 1.3rem) clamp(1rem, 2vw, 1.4rem);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--hv-orange) 6%, var(--hv-paper));
+  border: 1px solid color-mix(in srgb, var(--hv-orange) 26%, transparent);
+  box-shadow:
+    0 1px 2px rgba(42, 46, 56, 0.05),
+    0 14px 30px -22px rgba(42, 46, 56, 0.35);
+  text-align: left;
+}
+
+.destinoHead {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* the payoff — a quiet confirm, deliberately held below the step titles */
+.destinoCheck {
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--hv-orange-700);
+}
+
+.destinoTitle {
   margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-20);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--hv-charcoal);
+}
+
+.destinoText {
+  margin: 0.4rem 0 0;
   font-size: var(--fs-15);
   line-height: 1.55;
   color: var(--hv-charcoal-500);
@@ -1336,14 +1529,62 @@
   color: var(--hv-charcoal-500);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .step {
-    transition: none;
+/* ——— Mobile: the same journey, read top to bottom ——— */
+@media (max-width: 900px) {
+  .journey { display: block; }
+  .track { display: none; }
+
+  .steps {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    row-gap: 0;
   }
 
-  .step:hover {
-    transform: none;
+  .step {
+    grid-row: auto;
+    grid-template-columns: 54px minmax(0, 1fr);
+    grid-template-rows: none;
+    column-gap: 16px;
+    align-items: start;
+    justify-items: stretch;
+    padding-bottom: 26px;
+    position: relative;
   }
+
+  /* the vertical line, node to node, down to the finish */
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 54px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      180deg,
+      var(--hv-orange),
+      color-mix(in srgb, var(--hv-orange) 30%, transparent)
+    );
+  }
+
+  .node { grid-row: auto; grid-column: 1; }
+  .stepCard { grid-row: auto; grid-column: 2; margin: 0; }
+  .stepCard::after { display: none; }
+
+  .destino {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    grid-template-rows: none;
+    column-gap: 16px;
+    align-items: start;
+    justify-items: stretch;
+  }
+
+  .nodeDestino { grid-column: 1; }
+  .destinoCard { grid-column: 2; margin: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stepCard { transition: none; }
 }
 
 /* ============================================================
@@ -1407,36 +1648,6 @@
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-/* ——— Step icons: one system — charcoal line work, one orange action element ——— */
-.iconLine { stroke: var(--hv-charcoal); }
-.iconAccent { stroke: var(--hv-orange-700); }
-
-/* ——— Connectors: a chevron in the gap, pointing 01 → 04. Heavier weight and
-   full brand orange so the progression reads at a glance. Still centred in the
-   existing grid gap, so no layout value changes. ——— */
-.step::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: calc((clamp(0.9rem, 2vw, 1.4rem) / 2 + 9px) * -1);
-  width: 17px;
-  height: 17px;
-  border-top: 2.5px solid var(--hv-orange);
-  border-right: 2.5px solid var(--hv-orange);
-  border-radius: 2px;
-  transform: translateY(-50%) rotate(45deg);
-  pointer-events: none;
-}
-
-/* the last card has nothing to point at */
-.step:last-child::after { display: none; }
-
-/* Below the four-across breakpoint the cards stack, so a sideways chevron
-   would point at nothing: it is removed rather than left dangling. */
-@media (max-width: 1100px) {
-  .step::after { display: none; }
-}
-
 /* ============================================================
    MOBILE ONLY — breathing room for the ANTES / DESPUÉS beats
    Scoped to the phone breakpoint; desktop and tablet keep the
@@ -1476,4 +1687,48 @@
     /* a touch more internal padding so the text sits comfortably */
     padding: clamp(1.35rem, 5.5vw, 1.9rem);
   }
+}
+
+/* ——— Contacto: mismo tratamiento de skyline que el HERO (asset reutilizado, sin difuminar) ——— */
+.contactPane {
+  position: relative;
+  overflow: hidden;
+  justify-content: end;
+  /* reserve the exact band the city occupies so the copy never sits on the buildings */
+  padding-bottom: clamp(9.5rem, 18vw, 16rem);
+  background: linear-gradient(
+    to bottom,
+    #fff3e0 0%,
+    #ffe3bd 24%,
+    #ffd79f 48%,
+    #ffc081 70%,
+    #ffb26b 86%,
+    #ffa45a 100%
+  );
+}
+
+.contactSkyline {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+}
+.contactSkyline svg { display: block; width: 100%; height: auto; }
+
+/* copy + form above the silhouette */
+.contactPane > :not(.contactSkyline),
+.contactFormPane { position: relative; z-index: 1; }
+
+@media (max-width: 900px) {
+  .contactPane { padding-bottom: clamp(10.5rem, 26vw, 12.5rem); }
+}
+
+/* Movil: el dashboard vuelve a apilarse bajo el titular, a ancho completo.
+   Al final del archivo a proposito: gana por orden de cascada sobre la
+   grilla de dos columnas de escritorio, sin subir la especificidad. */
+@media (max-width: 760px) {
+  .heroInner { grid-template-columns: minmax(0, 1fr); }
+  .heroVisual { width: 100%; margin-inline-start: 0; transform: none; }
 }
