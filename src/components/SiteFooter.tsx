@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './SiteFooter.module.css';
-import logoWordmark from '../assets/brand/logo-wordmark.png';
+import logoMark from '../assets/brand/logo-mark.png';
+import { BUSINESS_EMAIL, BUSINESS_PHONE, BUSINESS_PHONE_DISPLAY } from '../lib/contact';
 
 const year = new Date().getFullYear();
 
@@ -10,14 +11,19 @@ export function SiteFooter() {
       <div className={styles.rule} aria-hidden="true" />
       <div className={styles.inner}>
         <p className={styles.brand}>
-          <img src={logoWordmark} alt="HolaVEcinos" width={704} height={93} />
+          <img src={logoMark} alt="" width={403} height={349} aria-hidden="true" />
+          <span className={styles.wordmark}>
+            Hola
+            <span className={styles.brandVe}>VE</span>
+            cinos
+          </span>
         </p>
         <div className={styles.meta}>
-          <a href="mailto:esucre@holavecinos.app">esucre@holavecinos.app</a>
+          <a href={`mailto:${BUSINESS_EMAIL}`}>{BUSINESS_EMAIL}</a>
+          <a href={`tel:${BUSINESS_PHONE}`}>{BUSINESS_PHONE_DISPLAY}</a>
           <Link to="/privacidad">Política de privacidad</Link>
-          <span className={styles.todo}>TODO: redes oficiales</span>
         </div>
-        <p className={styles.copy}>© {year} holaVEcinos. Todos los derechos reservados.</p>
+        <p className={styles.copy}>© {year} HolaVEcinos. Todos los derechos reservados.</p>
       </div>
     </footer>
   );
